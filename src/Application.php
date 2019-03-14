@@ -3,7 +3,6 @@
 namespace Graft;
 
 use Graft\Definition\ConfigurationHandlerInterface;
-use Graft\Definition\ApplicationInterface;
 use \ReflectionClass;
 use \Exception;
 
@@ -18,7 +17,7 @@ use \Exception;
  * @license  MIT
  * @since    0.0.1
  */
-abstract class Application implements ApplicationInterface
+abstract class Application
 {
     /**
      * Application Name

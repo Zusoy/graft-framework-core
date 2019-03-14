@@ -4,6 +4,7 @@ namespace Graft;
 
 use Graft\Application;
 use Graft\Definition\ConfigurationHandlerInterface;
+use Graft\Definition\ApplicationInterface;
 
 /**
  * Graft Plugin Class
@@ -15,7 +16,7 @@ use Graft\Definition\ConfigurationHandlerInterface;
  * @license  MIT
  * @since    0.0.1
  */
-class Plugin extends Application
+class Plugin extends Application implements ApplicationInterface
 {
     /**
      * Plugin Constructor
