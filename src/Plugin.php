@@ -4,11 +4,12 @@ namespace Graft;
 
 use Graft\Application;
 use Graft\Definition\ConfigurationHandlerInterface;
-use Graft\Definition\ApplicationInterface;
 
 /**
  * Graft Plugin Class
  * WordPress Plugin must extends this Class
+ * 
+ * @abstract
  * 
  * @package  Graft
  * @category Framework
@@ -16,7 +17,7 @@ use Graft\Definition\ApplicationInterface;
  * @license  MIT
  * @since    0.0.1
  */
-class Plugin extends Application implements ApplicationInterface
+abstract class Plugin extends Application
 {
     /**
      * Plugin Constructor
@@ -30,6 +31,14 @@ class Plugin extends Application implements ApplicationInterface
         parent::__construct($handler);
         $this->registerPluginHooks();
     }
+
+
+    /**
+     * Setup Plugin properties (Name, Description...)
+     *
+     * @return void
+     */
+    public abstract function setup();
 
 
     /**
