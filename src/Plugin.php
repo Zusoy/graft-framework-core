@@ -19,10 +19,12 @@ class Plugin extends Application
 {
     /**
      * Plugin Constructor
+     * 
+     * @final
      *
      * @param ConfigurationHandlerInterface $handler Configuration Handler
      */
-    public function __construct(ConfigurationHandlerInterface $handler)
+    final public function __construct(ConfigurationHandlerInterface $handler)
     {
         parent::__construct($handler);
         $this->registerPluginHooks();

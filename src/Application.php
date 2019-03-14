@@ -3,6 +3,7 @@
 namespace Graft;
 
 use Graft\Definition\ConfigurationHandlerInterface;
+use Graft\Definition\ApplicationInterface;
 use \ReflectionClass;
 use \Exception;
 
@@ -17,7 +18,7 @@ use \Exception;
  * @license  MIT
  * @since    0.0.1
  */
-abstract class Application
+abstract class Application implements ApplicationInterface
 {
     /**
      * Application Name
@@ -55,34 +56,13 @@ abstract class Application
      */
     public function __construct(ConfigurationHandlerInterface $handler)
     {
+        //setup Application with Implementation
+        $this->setup();
         $this->configHandler = $handler;
-        
-        $this->name = $this->getName();
-        $this->description = $this->getDescription();
         $this->reflection = new ReflectionClass(\get_class($this));
 
         $this->checkApplication();
     }
-
-
-    /**
-     * Get Application Name
-     * 
-     * @abstract
-     *
-     * @return string
-     */
-    public abstract function getName();
-
-
-    /**
-     * Get Application Description
-     * 
-     * @abstract
-     *
-     * @return string
-     */
-    public abstract function getDescription();
 
 
     /**
