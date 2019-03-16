@@ -79,11 +79,9 @@ abstract class Application
     public function __construct(ConfigurationHandlerInterface $handler)
     {
         //setup Application with Implementation
-        $this->setup();
         $this->configHandler = $handler;
         $this->reflection = new ReflectionClass(\get_class($this));
 
-        $this->checkApplication();
         $this->processConfiguration();
     }
 
@@ -96,37 +94,6 @@ abstract class Application
     public function getConfig()
     {
         return $this->config;
-    }
-
-
-    /**
-     * Check Application Components
-     * 
-     * @throws Exception
-     *
-     * @return void
-     */
-    private function checkApplication()
-    {
-        if ($this->name == null || empty($this->name)) {
-            throw new Exception("Graft : Trying to create Application without valid Name.");
-        }
-
-        if ($this->version == null || empty($this->version)) {
-            throw new Exception("Invalid Version for '".$this->name."' Application.");
-        }
-
-        if ($this->author == null || empty($this->author)) {
-            throw new Exception("Invalid Author Name for '".$this->name."' Application.");
-        }
-
-        if ($this->description == null || empty($this->description)) {
-            throw new Exception("Invalid Description for '".$this->name."' Application");
-        }
-
-        if ($this->configHandler == null) {
-            throw new Exception("No Configuration Handler for '".$this->name."' Application");
-        }
     }
 
 

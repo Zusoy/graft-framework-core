@@ -40,12 +40,20 @@ class Plugin extends Application
      */
     private function setupPlugin()
     {
-        $data = get_plugin_data($this->reflection->getFileName());
+        $pluginDatas = \get_file_data(
+            $this->reflection->getFileName(),
+            [
+                'name'        => 'Plugin Name',
+                'description' => 'Description',
+                'author'      => 'Author',
+                'version'     => 'Version'
+            ]
+        );
 
-        $this->name = $data['Name'];
-        $this->description = $data['Description'];
-        $this->author = $data['Author'];
-        $this->version = $data['Version'];
+        foreach ($pluginDatas as $property => $value)
+        {
+            $this->{$property} = $value;
+        }
     }
 
 
