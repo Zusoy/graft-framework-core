@@ -98,6 +98,17 @@ abstract class Application
 
 
     /**
+     * Get Application Configuration Handler
+     *
+     * @return ConfigurationHandlerInterface
+     */
+    public function getConfigHandler()
+    {
+        return $this->configHandler;
+    }
+
+
+    /**
      * Process the Application Configuration
      *
      * @return void
