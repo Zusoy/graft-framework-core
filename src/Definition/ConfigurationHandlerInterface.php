@@ -29,20 +29,4 @@ interface ConfigurationHandlerInterface
      * @return ConfigurationInterface
      */
     public function getBuilder();
-
-
-    /**
-     * Get Configuration Values
-     *
-     * @return array
-     */
-    public function getValues();
-
-
-    /**
-     * Process the Configuration
-     *
-     * @return void
-     */
-    public function processConfiguration();
 }

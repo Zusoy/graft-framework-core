@@ -9,15 +9,13 @@ use Graft\Definition\ConfigurationHandlerInterface;
  * Graft Plugin Class
  * WordPress Plugin must extends this Class
  * 
- * @abstract
- * 
  * @package  Graft
  * @category Framework
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
  * @since    0.0.1
  */
-abstract class Plugin extends Application
+class Plugin extends Application
 {
     /**
      * Plugin Constructor
@@ -29,16 +27,26 @@ abstract class Plugin extends Application
     final public function __construct(ConfigurationHandlerInterface $handler)
     {
         parent::__construct($handler);
+
+        $this->setupPlugin();
         $this->registerPluginHooks();
     }
 
 
     /**
-     * Setup Plugin properties (Name, Description...)
+     * Setup Plugin Properties
      *
      * @return void
      */
-    public abstract function setup();
+    private function setupPlugin()
+    {
+        $data = get_plugin_data($this->reflection->getFileName());
+
+        $this->name = $data['Name'];
+        $this->description = $data['Description'];
+        $this->author = $data['Author'];
+        $this->version = $data['Version'];
+    }
 
 
     /**

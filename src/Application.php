@@ -2,9 +2,11 @@
 
 namespace Graft;
 
-use Graft\Definition\ConfigurationHandlerInterface;
-use \ReflectionClass;
 use \Exception;
+use \ReflectionClass;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Yaml\Yaml;
+use Graft\Definition\ConfigurationHandlerInterface;
 
 /**
  * Graft Main Application
@@ -34,6 +36,27 @@ abstract class Application
     protected $description;
 
     /**
+     * Application Author
+     *
+     * @var string
+     */
+    protected $author;
+
+    /**
+     * Application Version
+     *
+     * @var string
+     */
+    protected $version;
+
+    /**
+     * Application Configuration Values
+     *
+     * @var array
+     */
+    protected $config = [];
+
+    /**
      * Application Configuration Handler
      *
      * @var ConfigurationHandlerInterface
@@ -61,6 +84,18 @@ abstract class Application
         $this->reflection = new ReflectionClass(\get_class($this));
 
         $this->checkApplication();
+        $this->processConfiguration();
+    }
+
+
+    /**
+     * Get Application Configuration Values
+     *
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
 
@@ -77,12 +112,43 @@ abstract class Application
             throw new Exception("Graft : Trying to create Application without valid Name.");
         }
 
+        if ($this->version == null || empty($this->version)) {
+            throw new Exception("Invalid Version for '".$this->name."' Application.");
+        }
+
+        if ($this->author == null || empty($this->author)) {
+            throw new Exception("Invalid Author Name for '".$this->name."' Application.");
+        }
+
         if ($this->description == null || empty($this->description)) {
-            throw new Exception("Invalid Description for ".$this->name." Application");
+            throw new Exception("Invalid Description for '".$this->name."' Application");
         }
 
         if ($this->configHandler == null) {
-            throw new Exception("No Configuration Handler for ".$this->name." Application");
+            throw new Exception("No Configuration Handler for '".$this->name."' Application");
         }
+    }
+
+
+    /**
+     * Process the Application Configuration
+     *
+     * @return void
+     */
+    private function processConfiguration()
+    {
+        $processor = new Processor();
+        $file = $this->configHandler->getFile();
+        $builder = $this->configHandler->getBuilder();
+
+        $config = Yaml::parse(
+            \file_get_contents($file)
+        );
+        $config = [$config];
+
+        $this->config = $processor->processConfiguration(
+            $builder,
+            $config
+        );
     }
 }
