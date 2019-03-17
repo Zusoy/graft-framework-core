@@ -2,10 +2,10 @@
 
 namespace Graft;
 
-use \ReflectionClass;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 use Graft\Definition\ConfigurationHandlerInterface;
+use \ReflectionClass;
 
 /**
  * Graft Main Application
@@ -86,6 +86,50 @@ abstract class Application
 
 
     /**
+     * Get Application Name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+
+    /**
+     * Get Application Description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+
+    /**
+     * Get Application Author
+     *
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+
+    /**
+     * Get Application Version
+     *
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+
+    /**
      * Get Application Configuration Values
      *
      * @return array
@@ -104,6 +148,17 @@ abstract class Application
     public function getConfigHandler()
     {
         return $this->configHandler;
+    }
+
+
+    /**
+     * Get Application Reflection Class
+     *
+     * @return ReflectionClass
+     */
+    public function getReflection()
+    {
+        return $this->reflection;
     }
 
 
