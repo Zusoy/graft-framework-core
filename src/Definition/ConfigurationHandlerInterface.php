@@ -13,7 +13,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * @license  MIT
  * @since    0.0.1
  */
-interface ConfigurationHandlerInterface
+interface ConfigurationHandlerInterface extends ConfigurationInterface
 {
     /**
      * Get Configuration File
@@ -21,12 +21,4 @@ interface ConfigurationHandlerInterface
      * @return string
      */
     public function getFile();
-
-
-    /**
-     * Get Configuration Builder
-     *
-     * @return ConfigurationInterface
-     */
-    public function getBuilder();
 }

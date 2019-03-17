@@ -2,7 +2,6 @@
 
 namespace Graft;
 
-use \Exception;
 use \ReflectionClass;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
@@ -117,15 +116,15 @@ abstract class Application
     {
         $processor = new Processor();
         $file = $this->configHandler->getFile();
-        $builder = $this->configHandler->getBuilder();
 
         $config = Yaml::parse(
             \file_get_contents($file)
         );
         $config = [$config];
 
+        //process configuration
         $this->config = $processor->processConfiguration(
-            $builder,
+            $this->configHandler,
             $config
         );
     }

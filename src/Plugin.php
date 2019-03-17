@@ -3,6 +3,7 @@
 namespace Graft;
 
 use Graft\Application;
+use Graft\BasePluginConfigurationHandler;
 use Graft\Definition\ConfigurationHandlerInterface;
 
 /**
@@ -19,13 +20,16 @@ class Plugin extends Application
 {
     /**
      * Plugin Constructor
-     * 
-     * @final
      *
-     * @param ConfigurationHandlerInterface $handler Configuration Handler
+     * @param ConfigurationHandlerInterface|null $handler
      */
-    final public function __construct(ConfigurationHandlerInterface $handler)
+    final public function __construct(?ConfigurationHandlerInterface $handler = null)
     {
+        if ($handler == null) {
+            //get default Plugin Configuration Handler
+            $handler = new BasePluginConfigurationHandler();
+        }
+
         parent::__construct($handler);
 
         $this->setupPlugin();
