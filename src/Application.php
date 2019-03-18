@@ -149,6 +149,26 @@ abstract class Application
 
 
     /**
+     * Get Application Configuration Node Values
+     *
+     * @param string $parentKey Parent Key Name
+     * @param string $childKey  Child Key Name
+     * 
+     * @return mixed
+     */
+    public function getConfigNode(string $parentKey, string $childKey)
+    {
+        if (!isset($this->config[$parentKey])) {
+            return null;
+        }
+
+        return (isset($this->config[$parentKey][$childKey]))
+            ? $this->config[$parentKey][$childKey]
+            : null;
+    }
+
+
+    /**
      * Get Application Configuration Handler
      *
      * @return ConfigurationHandlerInterface
@@ -167,6 +187,19 @@ abstract class Application
     public function getReflection()
     {
         return $this->reflection;
+    }
+
+
+    /**
+     * Get Application Directory
+     *
+     * @return string
+     */
+    public function getDirectory()
+    {
+        return \dirname(
+            $this->reflection->getFileName()
+        );
     }
 
 
