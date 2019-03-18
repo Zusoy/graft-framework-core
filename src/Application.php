@@ -132,11 +132,19 @@ abstract class Application
     /**
      * Get Application Configuration Values
      *
-     * @return array
+     * @param string|null $key Configuration Name
+     * 
+     * @return mixed
      */
-    public function getConfig()
+    public function getConfig(?string $key = null)
     {
-        return $this->config;
+        if ($key === null) {
+            return $this->config;
+        }
+
+        return (isset($this->config[$key]))
+            ? $this->config[$key]
+            : null;
     }
 
 

@@ -15,6 +15,7 @@
         }
     },
     "require": {
+        "php": "^7.2",
         "symfony/config": "^4.2",
         "symfony/yaml": "^4.2",
         "doctrine/annotations": "^1.6",
