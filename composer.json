@@ -1,0 +1,29 @@
+{
+    "name": "graft/framework-core",
+    "description": "Framework Core for WordPress Plugin Development.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zusoy",
+            "email": "gregoire.drapeau79@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Graft\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.2",
+        "symfony/config": "^4.2",
+        "symfony/yaml": "^4.2",
+        "doctrine/annotations": "^1.6",
+        "twig/twig": "^2.7",
+        "mindplay/composer-locator": "^2.1",
+        "doctrine/instantiator": "^1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    }
+}
