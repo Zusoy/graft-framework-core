@@ -19,6 +19,14 @@ use Graft\Definition\ConfigurationHandlerInterface;
 class Plugin extends Application
 {
     /**
+     * Plugin Instance
+     *
+     * @var self
+     */
+    private static $instance;
+
+
+    /**
      * Plugin Constructor
      *
      * @param ConfigurationHandlerInterface|null $handler
@@ -34,6 +42,24 @@ class Plugin extends Application
 
         $this->setupPlugin();
         $this->registerPluginHooks();
+
+        //get Plugin Instance
+        self::$instance = $this;
+    }
+
+
+    /**
+     * Get Current Plugin Instance
+     *
+     * @return self
+     */
+    public static function getCurrent()
+    {
+        if (self::$instance == null) {
+            new Plugin();
+        }
+
+        return self::$instance;
     }
 
 
