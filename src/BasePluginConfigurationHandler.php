@@ -24,7 +24,7 @@ final class BasePluginConfigurationHandler implements ConfigurationHandlerInterf
      *
      * @return string
      */
-    public function getFile()
+    public function getConfigFile()
     {
         return ComposerLocator::getRootPath() . "/config/plugin.yaml";
     }

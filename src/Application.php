@@ -170,7 +170,7 @@ abstract class Application
     private function processConfiguration()
     {
         $processor = new Processor();
-        $file = $this->configHandler->getFile();
+        $file = $this->configHandler->getConfigFile();
 
         $config = Yaml::parse(
             \file_get_contents($file)

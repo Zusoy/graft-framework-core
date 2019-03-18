@@ -20,5 +20,5 @@ interface ConfigurationHandlerInterface extends ConfigurationInterface
      *
      * @return string
      */
-    public function getFile();
+    public function getConfigFile();
 }
