@@ -14,7 +14,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  * @category BaseComponent
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
- * @since    0.0.1
+ * @since    0.0.2
  */
 final class MainConfigurationHandler implements ConfigurationHandlerInterface
 {
