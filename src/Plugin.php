@@ -19,6 +19,8 @@ class Plugin extends Application
 {
     /**
      * Plugin Instance
+     * 
+     * @static
      *
      * @var self
      */
@@ -27,6 +29,8 @@ class Plugin extends Application
 
     /**
      * Plugin Constructor
+     * 
+     * @final
      *
      * @param ConfigurationHandlerInterface|null $handler Application Handler (optional)
      */
@@ -43,6 +47,8 @@ class Plugin extends Application
 
     /**
      * Get Current Plugin Instance
+     * 
+     * @static
      *
      * @return self
      */
