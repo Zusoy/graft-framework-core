@@ -5,7 +5,11 @@ namespace Graft;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 use Graft\Definition\ConfigurationHandlerInterface;
+use Graft\Exception\ConfigurationHandlerException;
+use Graft\MainConfigurationHandler;
+use Graft\Plugin;
 use \ReflectionClass;
+use \ComposerLocator;
 
 /**
  * Graft Main Application
@@ -20,6 +24,14 @@ use \ReflectionClass;
  */
 abstract class Application
 {
+    /**
+     * Application Type Name
+     * 
+     * @var string
+     */
+    const PLUGIN = "Plugin";
+    const BUNDLE = "Bundle";
+
     /**
      * Application Name
      *
@@ -56,11 +68,11 @@ abstract class Application
     protected $config = [];
 
     /**
-     * Application Configuration Handler
+     * Application Configuration Handlers
      *
-     * @var ConfigurationHandlerInterface
+     * @var ConfigurationHandlerInterface[]
      */
-    protected $configHandler = null;
+    protected $configHandlers = [];
 
     /**
      * Application Reflection Class
@@ -73,14 +85,22 @@ abstract class Application
     /**
      * Application Constructor
      *
-     * @param ConfigurationHandlerInterface $handler Configuration Handler
+     * @param ConfigurationHandlerInterface|null $handler Application Handler (optional)
      */
-    public function __construct(ConfigurationHandlerInterface $handler)
+    public function __construct(?ConfigurationHandlerInterface $handler = null)
     {
-        //setup Application with Implementation
-        $this->configHandler = $handler;
         $this->reflection = new ReflectionClass(\get_class($this));
 
+        //setup Application
+        $this->setupApplication();
+        $this->setupMainConfiguration();
+
+        //add another configuration handler
+        if ($handler !== null) {
+            $this->addConfigHandler($handler);
+        }
+
+        //process the Application Configuration
         $this->processConfiguration();
     }
 
@@ -169,13 +189,58 @@ abstract class Application
 
 
     /**
-     * Get Application Configuration Handler
+     * Add Application Configuration Handler
+     * 
+     * @throws ConfigurationHandlerException
      *
-     * @return ConfigurationHandlerInterface
+     * @param ConfigurationHandlerInterface $handler Configuration Handler Object
+     * 
+     * @return self
      */
-    public function getConfigHandler()
+    public function addConfigHandler(ConfigurationHandlerInterface $handler)
     {
-        return $this->configHandler;
+        if ($this->getConfigHandler($handler->getConfigName()) !== null) {
+            throw new ConfigurationHandlerException(
+                "Configuration Handler with name '"
+                .$handler->getName()."' already exist in '".$this->getName()."' Application."
+            );
+        }
+
+        $this->configHandlers[] = $handler;
+        
+        return $this;
+    }
+
+
+    /**
+     * Get Application Configuration Handler by Name
+     *
+     * @param string $handlerName Config Handler name
+     * 
+     * @return ConfigurationHandlerInterface|null
+     */
+    public function getConfigHandler(string $handlerName)
+    {
+        foreach ($this->configHandlers as $configHandler)
+        {
+            if ($configHandler->getConfigName() === $handlerName)
+            {
+                return $configHandler;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Get All Application Configuration Handler
+     *
+     * @return ConfigurationHandlerInterface[]
+     */
+    public function getConfigHandlers()
+    {
+        return $this->configHandlers;
     }
 
 
@@ -204,6 +269,64 @@ abstract class Application
 
 
     /**
+     * Check if Application is an Plugin
+     *
+     * @return boolean
+     */
+    public function isPlugin()
+    {
+        $parent = $this->reflection->getParentClass();
+
+        return ($parent->getName() == Plugin::class);
+    }
+
+
+    /**
+     * Setup Application Properties
+     *
+     * @return void
+     */
+    private function setupApplication()
+    {
+        $appType = ($this->isPlugin())
+            ? Application::PLUGIN
+            : Application::BUNDLE;
+        
+        $appDatas = \get_file_data(
+            $this->reflection->getFileName(),
+            [
+                'name'        => $appType . " Name",
+                'description' => "Description",
+                'author'      => "Author",
+                'version'     => "Version" 
+            ]
+        );
+
+        foreach ($appDatas as $propertyName => $propertyValue) {
+            $this->{$propertyName} = $propertyValue;
+        }
+    }
+
+
+    /**
+     * Setup Main Application Configuration
+     *
+     * @return void
+     */
+    private function setupMainConfiguration()
+    {
+        $mainConfigHandler = new MainConfigurationHandler();
+        $configDir = ($this->isPlugin())
+            ? ComposerLocator::getRootPath() . "/config/"
+            : ComposerLocator::getRootPath() . "/config/bundles/";
+        $mainConfigHandler->setDirectory($configDir);
+        
+        //add default application configuration handler
+        $this->addConfigHandler($mainConfigHandler);
+    }
+
+
+    /**
      * Process the Application Configuration
      *
      * @return void
@@ -211,17 +334,23 @@ abstract class Application
     private function processConfiguration()
     {
         $processor = new Processor();
-        $file = $this->configHandler->getConfigFile();
 
-        $config = Yaml::parse(
-            \file_get_contents($file)
-        );
-        $config = [$config];
+        foreach ($this->configHandlers as $configHandler)
+        {
+            $file = $configHandler->getConfigFile();
+            
+            $config = Yaml::parse(
+                \file_get_contents($file)
+            );
+            $config = [$config];
 
-        //process configuration
-        $this->config = $processor->processConfiguration(
-            $this->configHandler,
-            $config
-        );
+            $this->config = \array_merge(
+                $this->config,
+                $processor->processConfiguration(
+                    $configHandler,
+                    $config
+                )
+            );
+        }
     }
 }

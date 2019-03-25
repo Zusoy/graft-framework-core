@@ -4,10 +4,9 @@ namespace Graft;
 
 use Graft\Definition\ConfigurationHandlerInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use \ComposerLocator;
 
 /**
- * Default Configuration Handler for Plugin
+ * Main Configuration Handler
  * 
  * @final
  * 
@@ -17,16 +16,35 @@ use \ComposerLocator;
  * @license  MIT
  * @since    0.0.1
  */
-final class BasePluginConfigurationHandler implements ConfigurationHandlerInterface
+final class MainConfigurationHandler implements ConfigurationHandlerInterface
 {
     /**
-     * Get Plugin Configuration File
+     * Configuration File Directory
+     *
+     * @var string
+     */
+    private $directory;
+
+
+    /**
+     * Get Configuration Name
+     *
+     * @return string
+     */
+    public function getConfigName()
+    {
+        return "application";
+    }
+
+
+    /**
+     * Get Configuration File
      *
      * @return string
      */
     public function getConfigFile()
     {
-        return ComposerLocator::getRootPath() . "/config/plugin.yaml";
+        return $this->directory . "application.yaml";
     }
 
 
@@ -37,12 +55,12 @@ final class BasePluginConfigurationHandler implements ConfigurationHandlerInterf
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder("plugin");
+        $treeBuilder = new TreeBuilder("application");
         
         //add nodes definitions
         $treeBuilder->getRootNode()
             ->children()
-                ->arrayNode('plugin')
+                ->arrayNode('application')
                     ->children()
                     ->booleanNode('dev')
                         ->defaultTrue()
@@ -72,5 +90,31 @@ final class BasePluginConfigurationHandler implements ConfigurationHandlerInterf
             ->end();
 
         return $treeBuilder;
+    }
+
+
+    /**
+     * Set Main ConfigurationHandler Directory
+     *
+     * @param string $directory The Config File's Directory
+     * 
+     * @return self
+     */
+    public function setDirectory(string $directory)
+    {
+        $this->directory = $directory;
+
+        return $this;
+    }
+
+
+    /**
+     * Get Main ConfigurationHandler File Directory
+     *
+     * @return string
+     */
+    public function getDirectory()
+    {
+        return $this->directory;
     }
 }
