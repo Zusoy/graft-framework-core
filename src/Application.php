@@ -190,10 +190,10 @@ abstract class Application
 
     /**
      * Add Application Configuration Handler
-     * 
-     * @throws ConfigurationHandlerException
      *
      * @param ConfigurationHandlerInterface $handler Configuration Handler Object
+     * 
+     * @throws ConfigurationHandlerException
      * 
      * @return self
      */
@@ -202,7 +202,8 @@ abstract class Application
         if ($this->getConfigHandler($handler->getConfigName()) !== null) {
             throw new ConfigurationHandlerException(
                 "Configuration Handler with name '"
-                .$handler->getName()."' already exist in '".$this->getName()."' Application."
+                .$handler->getConfigName()."' already exist in '"
+                .$this->getName()."' Application."
             );
         }
 
