@@ -16,6 +16,14 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 interface ConfigurationHandlerInterface extends ConfigurationInterface
 {
     /**
+     * Get Configuration Name
+     *
+     * @return string
+     */
+    public function getConfigName();
+
+
+    /**
      * Get Configuration File
      *
      * @return string
