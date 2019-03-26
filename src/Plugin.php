@@ -3,7 +3,6 @@
 namespace Graft;
 
 use Graft\Application;
-use Graft\BasePluginConfigurationHandler;
 use Graft\Definition\ConfigurationHandlerInterface;
 
 /**
@@ -20,6 +19,8 @@ class Plugin extends Application
 {
     /**
      * Plugin Instance
+     * 
+     * @static
      *
      * @var self
      */
@@ -28,28 +29,26 @@ class Plugin extends Application
 
     /**
      * Plugin Constructor
+     * 
+     * @final
      *
-     * @param ConfigurationHandlerInterface|null $handler
+     * @param ConfigurationHandlerInterface|null $handler Application Handler (optional)
      */
     final public function __construct(?ConfigurationHandlerInterface $handler = null)
     {
-        if ($handler == null) {
-            //get default Plugin Configuration Handler
-            $handler = new BasePluginConfigurationHandler();
-        }
-
         parent::__construct($handler);
 
-        $this->setupPlugin();
         $this->registerPluginHooks();
 
-        //get Plugin Instance
+        //set Plugin Instance
         self::$instance = $this;
     }
 
 
     /**
      * Get Current Plugin Instance
+     * 
+     * @static
      *
      * @return self
      */
@@ -60,30 +59,6 @@ class Plugin extends Application
         }
 
         return self::$instance;
-    }
-
-
-    /**
-     * Setup Plugin Properties
-     *
-     * @return void
-     */
-    private function setupPlugin()
-    {
-        $pluginDatas = \get_file_data(
-            $this->reflection->getFileName(),
-            [
-                'name'        => 'Plugin Name',
-                'description' => 'Description',
-                'author'      => 'Author',
-                'version'     => 'Version'
-            ]
-        );
-
-        foreach ($pluginDatas as $property => $value)
-        {
-            $this->{$property} = $value;
-        }
     }
 
 
