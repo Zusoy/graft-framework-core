@@ -3,9 +3,13 @@
 namespace Graft\Framework\Component;
 
 use HaydenPierce\ClassFinder\ClassFinder;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Graft\Framework\Component\Container;
 use Graft\Framework\ObjectReference;
 use Graft\Framework\Definition\FactoryInterface;
+use Graft\Framework\Common\AbstractAnnotation;
+use \ReflectionClass;
+use \ReflectionMethod;
 
 /**
  * Factory Component
@@ -32,6 +36,13 @@ class Factory implements FactoryInterface
      */
     protected $container;
 
+    /**
+     * Annotations Reader
+     * 
+     * @var AnnotationReader
+     */
+    protected $reader;
+
 
     /**
      * Factory Constructor
@@ -43,6 +54,7 @@ class Factory implements FactoryInterface
     final public function __construct(string $namespace)
     {
         $this->namespace = $namespace;
+        $this->reader = new AnnotationReader();
     }
 
 
@@ -66,9 +78,28 @@ class Factory implements FactoryInterface
         foreach ($classes as $class)
         {
             $reference = new ObjectReference(new $class());
+            $this->readAnnotations($reference->getReflection());
             $this->container->addObjectReference($reference);
         }
 
         return $this->container;
+    }
+
+
+    /**
+     * Read Class Annotations
+     *
+     * @param ReflectionClass $class Class to Read
+     * 
+     * @return void
+     */
+    public function readAnnotations(ReflectionClass $class)
+    {
+        $methods = $class->getMethods();
+
+        foreach ($methods as $method)
+        {
+            $methodAnnotations = $this->reader->getMethodAnnotations($method);
+        }
     }
 }
