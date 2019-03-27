@@ -2,6 +2,8 @@
 
 namespace Graft\Framework\Definition;
 
+use Graft\Framework\Component\Container;
+
 /**
  * Factory Interface
  * 
@@ -14,9 +16,11 @@ namespace Graft\Framework\Definition;
 interface FactoryInterface
 {
     /**
-     * Start Building
+     * Build Application Container
+     * 
+     * @param Container $container Container to Build
      *
-     * @return void
+     * @return Container
      */
-    public function build();
+    public function build(Container $container);
 }
