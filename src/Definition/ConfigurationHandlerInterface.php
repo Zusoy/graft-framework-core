@@ -1,6 +1,6 @@
 <?php
 
-namespace Graft\Definition;
+namespace Graft\Framework\Definition;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 

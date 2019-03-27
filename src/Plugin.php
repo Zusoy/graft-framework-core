@@ -1,9 +1,9 @@
 <?php
 
-namespace Graft;
+namespace Graft\Framework;
 
-use Graft\Application;
-use Graft\Definition\ConfigurationHandlerInterface;
+use Graft\Framework\Application;
+use Graft\Framework\Definition\ConfigurationHandlerInterface;
 
 /**
  * Graft Plugin Class

@@ -1,8 +1,8 @@
 <?php
 
-namespace Graft;
+namespace Graft\Framework;
 
-use Graft\Definition\ConfigurationHandlerInterface;
+use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**

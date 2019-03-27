@@ -1,13 +1,13 @@
 <?php
 
-namespace Graft;
+namespace Graft\Framework;
 
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
-use Graft\Definition\ConfigurationHandlerInterface;
-use Graft\Exception\ConfigurationHandlerException;
-use Graft\MainConfigurationHandler;
-use Graft\Plugin;
+use Graft\Framework\Definition\ConfigurationHandlerInterface;
+use Graft\Framework\Exception\ConfigurationHandlerException;
+use Graft\Framework\MainConfigurationHandler;
+use Graft\Framework\Plugin;
 use \ReflectionClass;
 use \ComposerLocator;
 
