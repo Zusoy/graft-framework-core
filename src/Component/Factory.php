@@ -25,6 +25,13 @@ class Factory implements FactoryInterface
      */
     protected $namespace;
 
+    /**
+     * Container in Construction
+     *
+     * @var Container
+     */
+    protected $container;
+
 
     /**
      * Factory Constructor
@@ -48,6 +55,8 @@ class Factory implements FactoryInterface
      */
     public function build(Container $container)
     {
+        $this->container = $container;
+
         //get Application classes with Namespace
         $classes = ClassFinder::getClassesInNamespace(
             $this->namespace,
@@ -57,9 +66,9 @@ class Factory implements FactoryInterface
         foreach ($classes as $class)
         {
             $reference = new ObjectReference(new $class());
-            $container->addObjectReference($reference);
+            $this->container->addObjectReference($reference);
         }
 
-        return $container;
+        return $this->container;
     }
 }
