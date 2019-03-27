@@ -4,6 +4,8 @@ namespace Graft\Framework;
 
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
+use Graft\Framework\Component\Factory;
+use Graft\Framework\Component\Container;
 use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Graft\Framework\Exception\ConfigurationHandlerException;
 use Graft\Framework\MainConfigurationHandler;
@@ -81,6 +83,13 @@ abstract class Application
      */
     protected $reflection;
 
+    /**
+     * Application Container
+     *
+     * @var Container
+     */
+    protected $container;
+
 
     /**
      * Application Constructor
@@ -102,6 +111,9 @@ abstract class Application
 
         //process the Application Configuration
         $this->processConfiguration();
+
+        //build Application
+        $this->buildContainer();
     }
 
 
@@ -257,6 +269,17 @@ abstract class Application
 
 
     /**
+     * Get Application Container
+     *
+     * @return Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+
+    /**
      * Get Application Directory
      *
      * @return string
@@ -353,5 +376,20 @@ abstract class Application
                 )
             );
         }
+    }
+
+
+    /**
+     * Build Application Container
+     *
+     * @return void
+     */
+    private function buildContainer()
+    {
+        $appNamespace = $this->getConfigNode("application", "namespace");
+        $factory = new Factory($appNamespace);
+        $container = new Container();
+
+        $this->container = $factory->build($container);
     }
 }

@@ -31,6 +31,20 @@ class ObjectReference
 
 
     /**
+     * ObjectReference Constructor
+     *
+     * @param object|null $instance Object Instance to Refer (optional)
+     */
+    public function __construct(?object $instance = null)
+    {
+        if ($instance !== null) {
+            $this->setInstance($instance);
+            $this->setReflection(new ReflectionClass($instance));
+        }
+    }
+
+
+    /**
      * Set Reference Instance
      *
      * @param object $instance Object Instance

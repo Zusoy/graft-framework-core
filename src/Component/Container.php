@@ -1,6 +1,6 @@
 <?php
 
-namespace Graft\Framework;
+namespace Graft\Framework\Component;
 
 use Graft\Container\WPContainer;
 use Graft\Framework\ObjectReference;
@@ -8,8 +8,8 @@ use Graft\Framework\ObjectReference;
 /**
  * Application Container
  * 
- * @package  Graft
- * @category Framework
+ * @package  Graft/Component
+ * @category Component
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
  * @since    0.0.3
