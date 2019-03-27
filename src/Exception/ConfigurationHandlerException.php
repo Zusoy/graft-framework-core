@@ -1,6 +1,6 @@
 <?php
 
-namespace Graft\Exception;
+namespace Graft\Framework\Exception;
 
 use \Exception;
 
