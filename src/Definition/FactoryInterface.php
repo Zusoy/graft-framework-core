@@ -28,9 +28,10 @@ interface FactoryInterface
     /**
      * Read Class Annotations
      *
-     * @param ReflectionClass $class Class to Read
+     * @param ReflectionClass $class    Class to Read
+     * @param object          $instance Object Instance
      * 
      * @return void
      */
-    public function readAnnotations(ReflectionClass $class);
+    public function readAnnotations(ReflectionClass $class, object $instance);
 }

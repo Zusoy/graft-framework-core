@@ -2,9 +2,11 @@
 
 namespace Graft\Framework\Common;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Graft\Framework\Component\Container;
 use \ReflectionClass;
 use \ReflectionMethod;
+use \ReflectionProperty;
 
 /**
  * Common Annotation Class
@@ -35,6 +37,13 @@ abstract class AbstractAnnotation
     protected $method;
 
     /**
+     * Current Annotation Reflection Property
+     *
+     * @var ReflectionProperty|null
+     */
+    protected $property;
+
+    /**
      * Current Annotation Class Instance
      *
      * @var object
@@ -57,6 +66,21 @@ abstract class AbstractAnnotation
      * @return void
      */
     public abstract function action();
+
+
+    /**
+     * Get Annotation Reflection Exclusions
+     * Return Array with Reflections Types Constantes
+     * 
+     * @abstract
+     * 
+     * @see https://www.php.net/manual/fr/class.reflectionclass.php#reflectionclass.constants.is-implicit-abstract
+     * @see https://www.php.net/manual/fr/class.reflectionmethod.php#reflectionmethod.constants.is-static
+     * @see https://www.php.net/manual/fr/class.reflectionproperty.php#reflectionproperty.constants.is-static
+     * 
+     * @return int[]|array
+     */
+    public abstract function getReflectionExclusions();
 
 
     /**
@@ -108,6 +132,32 @@ abstract class AbstractAnnotation
     public function getMethod()
     {
         return $this->method;
+    }
+
+
+    /**
+     * Set Current Annotation Reflection Property
+     *
+     * @param ReflectionProperty|null $property Current Reflection Property
+     * 
+     * @return self
+     */
+    public function setProperty(?ReflectionProperty $property)
+    {
+        $this->property = $property;
+
+        return $this;
+    }
+
+
+    /**
+     * Get Current Annotation Reflection Property
+     *
+     * @return ReflectionProperty|null
+     */
+    public function getProperty()
+    {
+        return $this->property;
     }
 
 
