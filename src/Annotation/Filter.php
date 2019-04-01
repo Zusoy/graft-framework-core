@@ -4,11 +4,11 @@ namespace Graft\Framework\Annotation;
 
 use Graft\Framework\Common\AbstractAnnotation;
 use Doctrine\Common\Annotations\Annotation;
-use Graft\Container\Component\Action as WPAction;
+use Graft\Container\Component\Filter as WPFilter;
 use \ReflectionMethod;
 
 /**
- * WordPress Action Annotation
+ * WordPress Filter Annotation
  * 
  * @final
  * 
@@ -21,10 +21,10 @@ use \ReflectionMethod;
  * @license  MIT
  * @since    0.0.4
  */
-final class Action extends AbstractAnnotation
+final class Filter extends AbstractAnnotation
 {
     /**
-     * Action Name
+     * Filter Name
      * 
      * @Required()
      *
@@ -33,14 +33,14 @@ final class Action extends AbstractAnnotation
     public $name;
 
     /**
-     * Action Priority
+     * Filter Priority
      *
      * @var integer
      */
     public $priority;
 
     /**
-     * Action Accepted Params
+     * Filter Accepted Params
      *
      * @var integer
      */
@@ -48,7 +48,7 @@ final class Action extends AbstractAnnotation
 
 
     /**
-     * Action Annotation Constructor
+     * Filter Annotation Constructor
      * 
      * @param array $values Annotation Parameters Values
      */
@@ -75,22 +75,22 @@ final class Action extends AbstractAnnotation
     {
         $hookid = strtolower($this->name . ":" . $this->method->getName());
 
-        $hookComponent = new WPAction();
-        $hookComponent->setTag($this->name)
+        $filterComponent = new WPFilter();
+        $filterComponent->setTag($this->name)
             ->setPriority($this->priority)
             ->setCallback([$this->instance, $this->method])
             ->setAcceptedParams($this->params);
-
-        //set Action Definition Location as Class::methodName
-        $hookComponent->setDefinitionLocation(
+        
+        //set Filter Definition Location as Class::methodName
+        $filterComponent->setDefinitionLocation(
             $this->class->getName() . "::" . $this->method->getName()
         );
 
-        //add Action Component in Current Application Container
-        $this->container->register($hookid, $hookComponent);
+        //add Filter Component in Current Application Container
+        $this->container->register($hookid, $filterComponent);
 
-        //hook to WordPress Action
-        \add_action(
+        //hook to WordPress Filter
+        \add_filter(
             $this->name,
             [$this->instance, $this->method->getName()],
             $this->priority,
