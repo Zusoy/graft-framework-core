@@ -73,6 +73,40 @@ class Renderer implements RendererInterface
 
 
     /**
+     * Render Template
+     *
+     * @param string  $template    Template Name
+     * @param array   $params      Template Parameters
+     * @param boolean $overridable Template Overridable (optional)
+     * 
+     * @return string
+     */
+    public function render(string $template, array $params, bool $overridable = true)
+    {
+        return ($this->overrideHandler->isOverrided($template) && $overridable)
+            ? $this->twigTheme->render($template, $params)
+            : $this->twig->render($template, $params);
+    }
+
+
+    /**
+     * Display Template
+     *
+     * @param string  $template    Template Name
+     * @param array   $params      Template Parameters
+     * @param boolean $overridable Template Overridable (optional)
+     * 
+     * @return void
+     */
+    public function display(string $template, array $params, bool $overridable = true)
+    {
+        echo ($this->overrideHandler->isOverrided($template) && $overridable)
+            ? $this->twigTheme->render($template, $params)
+            : $this->twig->render($template, $params);
+    }
+
+
+    /**
      * Set Renderer Template Override Handler
      *
      * @param TemplateOverrideHandlerInterface $handler Template Override Handler
