@@ -5,6 +5,7 @@ namespace Graft\Framework\Common;
 use Graft\Framework\Definition\RendererInterface;
 use Graft\Framework\Definition\TemplateOverrideHandlerInterface;
 use Graft\Framework\MainTemplateOverrideHandler;
+use Graft\Framework\Twig\WordpressTwigExtension;
 use Graft\Framework\Plugin;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
@@ -159,6 +160,16 @@ class Renderer implements RendererInterface
                 $this->overrideHandler->getTemplateOverrideDirectory()
             );
             $this->twigTheme = new Environment($this->themeLoader);
+        }
+
+        //add Environments Extensions
+        $engines = [$this->twig, $this->twigTheme];
+        foreach ($engines as $engine)
+        {
+            if ($engine !== null)
+            {
+                $engine->addExtension(new WordpressTwigExtension());
+            }
         }
     }
 }
