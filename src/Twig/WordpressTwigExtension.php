@@ -28,7 +28,8 @@ final class WordpressTwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction("do_action", [$this, "doAction"]),
-            new TwigFunction("apply_filters", [$this, "applyFilters"])
+            new TwigFunction("apply_filters", [$this, "applyFilters"]),
+            new TwigFunction("do_shortcode", [$this, "doShortcode"])
         ];
     }
 
@@ -58,5 +59,19 @@ final class WordpressTwigExtension extends AbstractExtension
     public function applyFilters(string $tag, ...$arg)
     {
         return \apply_filters($tag, ...$arg);
+    }
+
+
+    /**
+     * Invok WordPress Shortcode
+     *
+     * @param string $content    Content to search for shortcodes.
+     * @param bool   $ignoreHtml When true, shortcodes inside HTML elements will be skipped. (optional)
+     * 
+     * @return mixed
+     */
+    public function doShortcode(string $content, bool $ignoreHtml = false)
+    {
+        return \do_shortcode($content, $ignoreHtml);
     }
 }
