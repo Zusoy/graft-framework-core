@@ -3,6 +3,7 @@
 namespace Graft\Framework\Definition;
 
 use Graft\Framework\Component\Container;
+use \ReflectionClass;
 
 /**
  * Factory Interface
@@ -23,4 +24,14 @@ interface FactoryInterface
      * @return Container
      */
     public function build(Container $container);
+
+    /**
+     * Read Class Annotations
+     *
+     * @param ReflectionClass $class    Class to Read
+     * @param object          $instance Object Instance
+     * 
+     * @return void
+     */
+    public function readAnnotations(ReflectionClass $class, object $instance);
 }
