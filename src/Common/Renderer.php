@@ -76,12 +76,12 @@ class Renderer implements RendererInterface
      * Render Template
      *
      * @param string  $template    Template Name
-     * @param array   $params      Template Parameters
+     * @param array   $params      Template Parameters (optional)
      * @param boolean $overridable Template Overridable (optional)
      * 
      * @return string
      */
-    public function render(string $template, array $params, bool $overridable = true)
+    public function render(string $template, array $params = [], bool $overridable = true)
     {
         return ($this->overrideHandler->isOverrided($template) && $overridable)
             ? $this->twigTheme->render($template, $params)
@@ -93,12 +93,12 @@ class Renderer implements RendererInterface
      * Display Template
      *
      * @param string  $template    Template Name
-     * @param array   $params      Template Parameters
+     * @param array   $params      Template Parameters (optional)
      * @param boolean $overridable Template Overridable (optional)
      * 
      * @return void
      */
-    public function display(string $template, array $params, bool $overridable = true)
+    public function display(string $template, array $params = [], bool $overridable = true)
     {
         echo ($this->overrideHandler->isOverrided($template) && $overridable)
             ? $this->twigTheme->render($template, $params)
@@ -145,14 +145,20 @@ class Renderer implements RendererInterface
         );
         $appViews = Plugin::getCurrent()->getDirectory() . "/" . $appViews;
 
-        //set main environments
-        $this->loader = new FilesystemLoader($appViews);
-        $this->twig = new Environment($this->loader);
+        if (\is_dir($appViews))
+        {
+            //set main environments
+            $this->loader = new FilesystemLoader($appViews);
+            $this->twig = new Environment($this->loader);
+        }
 
-        //set override environments
-        $this->themeLoader = new FilesystemLoader(
-            $this->overrideHandler->getTemplateOverrideDirectory()
-        );
-        $this->twigTheme = new Environment($this->themeLoader);
+        if (\is_dir($this->overrideHandler->getTemplateOverrideDirectory()))
+        {
+            //set override environments
+            $this->themeLoader = new FilesystemLoader(
+                $this->overrideHandler->getTemplateOverrideDirectory()
+            );
+            $this->twigTheme = new Environment($this->themeLoader);
+        }
     }
 }

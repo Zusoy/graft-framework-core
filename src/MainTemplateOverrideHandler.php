@@ -27,9 +27,15 @@ final class MainTemplateOverrideHandler implements TemplateOverrideHandlerInterf
      */
     public function isOverrided(string $template)
     {
-        $templatePath = $this->getTemplateOverrideDirectory() . $template;
+        $directory = $this->getTemplateOverrideDirectory();
 
-        return (\file_exists($templatePath));
+        if (!\is_dir($directory)) {
+            return false;
+        }
+
+        $templatePath = $directory . $template;
+
+        return (\is_file($templatePath));
     }
 
 
@@ -40,7 +46,7 @@ final class MainTemplateOverrideHandler implements TemplateOverrideHandlerInterf
      */
     public function getTemplateOverrideDirectory()
     {
-        $pluginName = Plugin::getCurrent()->getName();
+        $pluginName = \trim(Plugin::getCurrent()->getName());
         $directory = \get_stylesheet_directory() . "/" . strtolower($pluginName) . "/";
         
         return $directory;
