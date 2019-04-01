@@ -36,12 +36,12 @@ class Plugin extends Application
      */
     final public function __construct(?ConfigurationHandlerInterface $handler = null)
     {
+        //set Plugin Instance
+        self::$instance = $this;
+
         parent::__construct($handler);
 
         $this->registerPluginHooks();
-
-        //set Plugin Instance
-        self::$instance = $this;
     }
 
 
@@ -54,10 +54,6 @@ class Plugin extends Application
      */
     public static function getCurrent()
     {
-        if (self::$instance == null) {
-            new Plugin();
-        }
-
         return self::$instance;
     }
 
