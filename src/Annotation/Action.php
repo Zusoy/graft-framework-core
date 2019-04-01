@@ -5,6 +5,7 @@ namespace Graft\Framework\Annotation;
 use Graft\Framework\Component\Container;
 use Graft\Framework\Common\AbstractAnnotation;
 use Doctrine\Common\Annotations\Annotation;
+use Graft\Container\WPHook;
 use Graft\Container\Component\Action as WPAction;
 use \ReflectionClass;
 use \ReflectionMethod;
@@ -74,11 +75,19 @@ class Action extends AbstractAnnotation
     public function action()
     {
         $hookid = strtolower($this->name . ":" . $this->method->getName());
+
         $hookComponent = new WPAction();
         $hookComponent->setTag($this->name)
             ->setPriority($this->priority)
             ->setCallback([$this->instance, $this->method])
             ->setAcceptedParams($this->params);
+
+        //set Hook Definition Location as Class::methodName
+        $hookComponent->setDefinitionLocation(
+            $this->class->getName() . "::" . $this->method->getName()
+        );
+
+        //add Hook Component in Current Application Container
         $this->container->register($hookid, $hookComponent);
 
         //hook to WordPress Action
@@ -94,6 +103,8 @@ class Action extends AbstractAnnotation
     /**
      * Get Annotation Reflection Exclusions
      * Return Array with Reflections Types Constantes
+     * 
+     * Exclude Private and Protected Method to prevent accessibility error
      * 
      * @see https://www.php.net/manual/fr/class.reflectionmethod.php
      * 
