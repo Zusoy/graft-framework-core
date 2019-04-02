@@ -78,13 +78,18 @@ class Factory implements FactoryInterface
             ClassFinder::RECURSIVE_MODE
         );
 
+        //get all components
         foreach ($classes as $class)
         {
             $reference = new ObjectReference(new $class());
             $this->container->addObjectReference($reference);
+        }
 
+        //read all components annotations
+        foreach ($this->container->getObjectReferences() as $reference)
+        {
             $this->readAnnotations(
-                $reference->getReflection(), 
+                $reference->getReflection(),
                 $reference->getInstance()
             );
         }

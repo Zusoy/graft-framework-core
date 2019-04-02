@@ -48,4 +48,25 @@ class Container extends WPContainer
     {
         return $this->references;
     }
+
+
+    /**
+     * Get Container Reference by Class Name
+     * 
+     * @param string $className The Class Name to Find
+     *
+     * @return ObjectReference|null
+     */
+    public function getObjectReferenceByClassName(string $className)
+    {
+        foreach ($this->references as $reference)
+        {
+            if ($reference->getReflection()->getName() == $className)
+            {
+                return $reference;
+            }
+        }
+
+        return null;
+    }
 }
