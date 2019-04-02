@@ -8,6 +8,7 @@ use Graft\Framework\MainTemplateOverrideHandler;
 use Graft\Framework\Twig\WordpressTwigExtension;
 use Graft\Framework\Plugin;
 use Twig\Loader\FilesystemLoader;
+use Twig\Extension\AbstractExtension;
 use Twig\Environment;
 
 /**
@@ -56,6 +57,13 @@ class Renderer implements RendererInterface
      */
     protected $overrideHandler;
 
+    /**
+     * Renderer Twig Extensions
+     *
+     * @var AbstractExtension[]
+     */
+    private $extensions = [];
+
 
     /**
      * Renderer Constructor
@@ -70,6 +78,9 @@ class Renderer implements RendererInterface
 
         $this->setTemplateOverrideHandler($overrideHandler);
         $this->initTwigEnvironments();
+
+        //add WordPress Twig Extensions Functions
+        $this->addTwigExtension(new WordpressTwigExtension());
     }
 
 
@@ -134,6 +145,58 @@ class Renderer implements RendererInterface
 
 
     /**
+     * Add Renderer Twig Extension
+     * 
+     * @final
+     *
+     * @param AbstractExtension $extension Twig Extension
+     * 
+     * @return self
+     */
+    final protected function addTwigExtension(AbstractExtension $extension)
+    {
+        $this->extensions[] = $extension;
+        $this->syncExtensions();
+        
+        return $this;
+    }
+
+
+    /**
+     * Get Renderer Twig Extensions
+     * 
+     * @final
+     *
+     * @return AbstractExtension[]
+     */
+    final protected function getTwigExtensions()
+    {
+        return $this->extensions;
+    }
+
+
+    /**
+     * Sync Renderer Twig Extensions
+     * 
+     * @final
+     *
+     * @return void
+     */
+    final protected function syncExtensions()
+    {
+        $engines = [$this->twig, $this->twigTheme];
+
+        foreach ($engines as $engine) {
+            if ($engine !== null) {
+                foreach ($this->extensions as $extension) {
+                    $engine->addExtension($extension);
+                }
+            }
+        }
+    }
+
+
+    /**
      * Init Renderer Twig Environments
      *
      * @return void
@@ -160,16 +223,6 @@ class Renderer implements RendererInterface
                 $this->overrideHandler->getTemplateOverrideDirectory()
             );
             $this->twigTheme = new Environment($this->themeLoader);
-        }
-
-        //add Environments Extensions
-        $engines = [$this->twig, $this->twigTheme];
-        foreach ($engines as $engine)
-        {
-            if ($engine !== null)
-            {
-                $engine->addExtension(new WordpressTwigExtension());
-            }
         }
     }
 }
