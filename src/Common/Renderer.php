@@ -67,16 +67,11 @@ class Renderer implements RendererInterface
 
     /**
      * Renderer Constructor
-     *
-     * @param TemplateOverrideHandlerInterface|null $overrideHandler Template Override Handler (optional)
      */
-    public function __construct(?TemplateOverrideHandlerInterface $overrideHandler = null)
+    public function __construct()
     {
-        if ($overrideHandler === null) {
-            $overrideHandler = new MainTemplateOverrideHandler();
-        }
-
-        $this->setTemplateOverrideHandler($overrideHandler);
+        //set default Template Override Handler
+        $this->setTemplateOverrideHandler(new MainTemplateOverrideHandler());
         $this->initTwigEnvironments();
 
         //add WordPress Twig Extensions Functions
@@ -153,7 +148,7 @@ class Renderer implements RendererInterface
      * 
      * @return self
      */
-    final protected function addTwigExtension(AbstractExtension $extension)
+    final public function addTwigExtension(AbstractExtension $extension)
     {
         $this->extensions[] = $extension;
         $this->syncExtensions();
@@ -169,7 +164,7 @@ class Renderer implements RendererInterface
      *
      * @return AbstractExtension[]
      */
-    final protected function getTwigExtensions()
+    final public function getTwigExtensions()
     {
         return $this->extensions;
     }
@@ -189,7 +184,9 @@ class Renderer implements RendererInterface
         foreach ($engines as $engine) {
             if ($engine !== null) {
                 foreach ($this->extensions as $extension) {
-                    $engine->addExtension($extension);
+                    if (!$engine->hasExtension(\get_class($extension))) {
+                        $engine->addExtension($extension);
+                    }
                 }
             }
         }
