@@ -47,6 +47,7 @@ final class MainTemplateOverrideHandler implements TemplateOverrideHandlerInterf
     public function getTemplateOverrideDirectory()
     {
         $pluginName = \trim(Plugin::getCurrent()->getName());
+        $pluginName = \str_replace(' ', '', $pluginName);
         $directory = \get_stylesheet_directory() . "/" . strtolower($pluginName) . "/";
         
         return $directory;
