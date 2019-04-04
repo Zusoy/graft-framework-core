@@ -9,6 +9,7 @@ use \ReflectionMethod;
 
 /**
  * WordPress Action Annotation
+ * Hook into Action
  * 
  * @final
  * 
@@ -107,7 +108,7 @@ final class Action extends AbstractAnnotation
      * 
      * @see https://www.php.net/manual/fr/class.reflectionmethod.php
      * 
-     * @return int[]|array
+     * @return int[]
      */
     public function getReflectionExclusions()
     {
