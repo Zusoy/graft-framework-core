@@ -36,6 +36,26 @@ final class Injection extends AbstractAnnotation
         }
 
         $parameters = $this->method->getParameters();
+        $components = [];
+
+        foreach ($parameters as $parameter)
+        {
+            $class = $parameter->getClass();
+
+            if ($class != null) {
+                $component = $this->container->getComponentByClassName(
+                    $class->getName()
+                );
+                if ($component != null) {
+                    $components[] = $component;
+                }
+            }
+        }
+
+        if (\count($components) > 0) {
+            //call the method with components as parameter
+            $this->instance->{$this->method->getName()}(...$components);
+        }
     }
 
 

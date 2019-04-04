@@ -23,6 +23,38 @@ class Container extends WPContainer
      */
     protected $references = [];
 
+    /**
+     * Injectable Framework Components
+     *
+     * @var ObjectReference[]
+     */
+    protected $injectableComponents = [];
+
+
+    /**
+     * Get Injectable Framework Component or App Component by Class Name
+     *
+     * @param string $class Class Name
+     * 
+     * @return ObjectReference|null
+     */
+    public function getComponentByClassName(string $class)
+    {
+        $appComponent = $this->getObjectReferenceByClassName($class);
+
+        if ($appComponent !== null) {
+            return $appComponent;
+        }
+
+        $frameworkComponent = $this->getInjectableFrameworkComponentByClassName(
+            $class
+        );
+
+        return ($frameworkComponent !== null)
+            ? $frameworkComponent
+            : null;
+    }
+
     
     /**
      * Add Object Reference in Container
@@ -64,6 +96,53 @@ class Container extends WPContainer
             if ($reference->getReflection()->getName() == $className)
             {
                 return $reference;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add Framework Injectable Component
+     *
+     * @param ObjectReference $component Framework Component
+     * 
+     * @return self
+     */
+    public function addInjectableFrameworkComponent(ObjectReference $component)
+    {
+        $this->injectableComponents[] = $component;
+
+        return $this;
+    }
+
+
+    /**
+     * Get Injectable Framework Components
+     *
+     * @return ObjectReference[]
+     */
+    public function getInjectableFrameworkComponents()
+    {
+        return $this->injectableComponents;
+    }
+
+
+    /**
+     * Get Injectable Framework Component by Class name
+     *
+     * @param string $class Component Class Name
+     * 
+     * @return ObjectReference|null
+     */
+    public function getInjectableFrameworkComponentByClassName(string $class)
+    {
+        foreach ($this->injectableComponents as $component)
+        {
+            if ($component->getReflection()->getName() == $class)
+            {
+                return $component;
             }
         }
 

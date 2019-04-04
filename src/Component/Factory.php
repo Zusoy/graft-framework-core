@@ -78,6 +78,22 @@ class Factory implements FactoryInterface
             ClassFinder::RECURSIVE_MODE
         );
 
+        //get injectable framework components
+        $frameworkComponents = ClassFinder::getClassesInNamespace(
+            "Graft\\Framework\\Injectable",
+            ClassFinder::RECURSIVE_MODE
+        );
+
+        foreach ($frameworkComponents as $frameworkComponent)
+        {
+            $componentReference = new ObjectReference(
+                new $frameworkComponent()
+            );
+            $this->container->addInjectableFrameworkComponent(
+                $componentReference
+            );
+        }
+
         //get all components
         foreach ($classes as $class)
         {
