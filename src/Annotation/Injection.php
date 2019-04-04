@@ -47,7 +47,7 @@ final class Injection extends AbstractAnnotation
                     $class->getName()
                 );
                 if ($component != null) {
-                    $components[] = $component;
+                    $components[] = $component->getInstance();
                 }
             }
         }
