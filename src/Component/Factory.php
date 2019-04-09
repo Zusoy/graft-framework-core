@@ -6,13 +6,13 @@ use \ReflectionClass;
 use \ReflectionMethod;
 use \ReflectionProperty;
 use Graft\Framework\ObjectReference;
-use Graft\Framework\Component\Container;
 use Graft\Framework\Common\AbstractAnnotation;
 use Graft\Framework\Definition\FactoryInterface;
 use Graft\Framework\Exception\AnnotationTransgressedExclusion;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use HaydenPierce\ClassFinder\ClassFinder;
+use Graft\Framework\Container;
 
 /**
  * Factory Component
@@ -72,41 +72,30 @@ class Factory implements FactoryInterface
     {
         $this->container = $container;
 
-        //get Application classes with Namespace
-        $classes = ClassFinder::getClassesInNamespace(
+        $appClasses = ClassFinder::getClassesInNamespace(
             $this->namespace,
             ClassFinder::RECURSIVE_MODE
         );
 
-        //get injectable framework components
-        $frameworkComponents = ClassFinder::getClassesInNamespace(
+        $frameworkClasses = ClassFinder::getClassesInNamespace(
             "Graft\\Framework\\Injectable",
             ClassFinder::RECURSIVE_MODE
         );
 
-        foreach ($frameworkComponents as $frameworkComponent)
-        {
-            $componentReference = new ObjectReference(
-                new $frameworkComponent()
-            );
-            $this->container->addInjectableFrameworkComponent(
-                $componentReference
-            );
+        //get injectables components from Graft Framework
+        foreach ($frameworkClasses as $class) {
+            $this->container->set($class, \DI\autowire($class));
         }
 
-        //get all components
-        foreach ($classes as $class)
-        {
-            $reference = new ObjectReference(new $class());
-            $this->container->addObjectReference($reference);
-        }
+        //get application components
+        foreach ($appClasses as $class) {
+            $this->container->set($class, \DI\autowire($class));
 
-        //read all components annotations
-        foreach ($this->container->getObjectReferences() as $reference)
-        {
+            $reflection = new ReflectionClass($class);
+            $instance = $this->container->get($class);
             $this->readAnnotations(
-                $reference->getReflection(),
-                $reference->getInstance()
+                $reflection,
+                $instance
             );
         }
 

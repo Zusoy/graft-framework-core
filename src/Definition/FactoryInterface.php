@@ -2,7 +2,7 @@
 
 namespace Graft\Framework\Definition;
 
-use Graft\Framework\Component\Container;
+use Graft\Framework\Container;
 use \ReflectionClass;
 
 /**

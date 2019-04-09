@@ -5,11 +5,12 @@ namespace Graft\Framework;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 use Graft\Framework\Component\Factory;
-use Graft\Framework\Component\Container;
 use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Graft\Framework\Exception\ConfigurationHandlerException;
 use Graft\Framework\MainConfigurationHandler;
+use Graft\Framework\Container;
 use Graft\Framework\Plugin;
+use DI\ContainerBuilder;
 use \ReflectionClass;
 use \ComposerLocator;
 
@@ -388,7 +389,11 @@ abstract class Application
     {
         $appNamespace = $this->getConfigNode("application", "namespace");
         $factory = new Factory($appNamespace);
-        $container = new Container();
+
+        $containerBuilder = new ContainerBuilder(Container::class);
+        $containerBuilder->useAnnotations(false); //disable PHP-DI Annotations
+        $containerBuilder->useAutowiring(true);
+        $container = $containerBuilder->build();
 
         $this->container = $factory->build($container);
     }
