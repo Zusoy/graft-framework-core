@@ -24,6 +24,27 @@ use \ReflectionMethod;
 final class Injection extends AbstractAnnotation
 {
     /**
+     * Parameters Options
+     *
+     * @var array
+     */
+    public $parameters;
+
+
+    /**
+     * Injection Annotation Constructor
+     * 
+     * @param array $values Annotation Parameters Values
+     */
+    public function __construct(array $values)
+    {
+        $this->parameters = (isset($values['parameters']))
+            ? $values['parameters']
+            : [];
+    }
+
+
+    /**
      * Annotation Action
      *
      * @return void
@@ -40,14 +61,18 @@ final class Injection extends AbstractAnnotation
 
         foreach ($parameters as $parameter)
         {
-            $class = $parameter->getClass();
+            $class = $parameter->getType()->getName();
+            $component = $this->container->getComponentByClassName($class);
 
-            if ($class != null) {
-                $component = $this->container->getComponentByClassName(
-                    $class->getName()
-                );
-                if ($component != null) {
-                    $components[] = $component->getInstance();
+            if ($component !== null)
+            {
+                $components[] = $component->getInstance();
+            }
+            else
+            {
+                //check for injected parameters
+                if (isset($this->parameters[$parameter->getName()])){
+                    $components[] = $this->parameters[$parameter->getName()];
                 }
             }
         }
