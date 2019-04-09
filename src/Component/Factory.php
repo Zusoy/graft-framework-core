@@ -12,7 +12,7 @@ use Graft\Framework\Exception\AnnotationTransgressedExclusion;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use HaydenPierce\ClassFinder\ClassFinder;
-use Graft\Framework\Container;
+use Graft\Container\WPContainer;
 
 /**
  * Factory Component
@@ -35,7 +35,7 @@ class Factory implements FactoryInterface
     /**
      * Container in Construction
      *
-     * @var Container
+     * @var WPContainer
      */
     protected $container;
 
@@ -64,11 +64,11 @@ class Factory implements FactoryInterface
     /**
      * Build Application Container
      * 
-     * @param Container $container Application Container
+     * @param WPContainer $container Application Container
      *
-     * @return Container
+     * @return WPContainer
      */
-    public function build(Container $container)
+    public function build(WPContainer $container)
     {
         $this->container = $container;
 

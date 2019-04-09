@@ -3,6 +3,7 @@
 namespace Graft\Framework\Annotation;
 
 use Graft\Framework\Common\AbstractAnnotation;
+use Graft\Container\Component\Action as WPAction;
 use Doctrine\Common\Annotations\Annotation;
 use \ReflectionMethod;
 
@@ -73,6 +74,18 @@ final class Action extends AbstractAnnotation
      */
     public function action()
     {
+        $actionComponent = new WPAction();
+
+        $location = $this->class->getFileName();
+        $actionComponent->setTag($this->name)
+            ->setAcceptedParams($this->params)
+            ->setPriority($this->priority)
+            ->setDefinitionLocation($location)
+            ->setCallback([$this->instance, $this->method->getName()]);
+
+        //add component to application container
+        $this->container->addWordPressComponent($actionComponent);
+
         //hook to WordPress Action
         \add_action(
             $this->name,

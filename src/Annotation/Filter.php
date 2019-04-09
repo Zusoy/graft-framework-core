@@ -74,21 +74,17 @@ final class Filter extends AbstractAnnotation
      */
     public function action()
     {
-        $hookid = strtolower($this->name . ":" . $this->method->getName());
-
         $filterComponent = new WPFilter();
-        $filterComponent->setTag($this->name)
-            ->setPriority($this->priority)
-            ->setCallback([$this->instance, $this->method])
-            ->setAcceptedParams($this->params);
         
-        //set Filter Definition Location as Class::methodName
-        $filterComponent->setDefinitionLocation(
-            $this->class->getName() . "::" . $this->method->getName()
-        );
-
-        //add Filter Component in Current Application Container
-        $this->container->register($hookid, $filterComponent);
+        $location = $this->class->getFileName();
+        $filterComponent->setTag($this->name)
+            ->setAcceptedParams($this->params)
+            ->setPriority($this->priority)
+            ->setDefinitionLocation($location)
+            ->setCallback([$this->instance, $this->method->getName()]);
+        
+        //add component to application container
+        $this->container->addWordPressComponent($filterComponent);
 
         //hook to WordPress Filter
         \add_filter(

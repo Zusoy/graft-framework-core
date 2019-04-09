@@ -97,8 +97,6 @@ final class AdminMenu extends AbstractAnnotation
      */
     public function action()
     {
-        $componentid = strtolower("menu:".$this->title);
-
         //create the Menu
         $menuComponent = new WPAdminMenu(
             $this->title,
@@ -110,7 +108,7 @@ final class AdminMenu extends AbstractAnnotation
         );
 
         //add AdminMenu Component in Current Application Container
-        $this->container->register($componentid, $menuComponent);
+        $this->container->addWordPressComponent($menuComponent);
     }
 
 

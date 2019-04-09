@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2c4fc34e904faf1c8ac16ab06bfd4ac",
+    "content-hash": "4f272a63b3bc5541a44e03b0142e763b",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -195,22 +195,22 @@
         },
         {
             "name": "graft/wp-container",
-            "version": "v0.0.2",
+            "version": "dev-feature/di",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Zusoy/graft-wp-container.git",
-                "reference": "ab8e5b4de5c2596bb3975df4f9b9245f51316169"
+                "reference": "c85d1b7385422745893987256be9ca148e280970"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Zusoy/graft-wp-container/zipball/ab8e5b4de5c2596bb3975df4f9b9245f51316169",
-                "reference": "ab8e5b4de5c2596bb3975df4f9b9245f51316169",
+                "url": "https://api.github.com/repos/Zusoy/graft-wp-container/zipball/c85d1b7385422745893987256be9ca148e280970",
+                "reference": "c85d1b7385422745893987256be9ca148e280970",
                 "shasum": ""
             },
             "require": {
                 "cocur/slugify": "^3.2",
                 "php": "^7.2",
-                "psr/container": "^1.0"
+                "php-di/php-di": "^6.0"
             },
             "type": "library",
             "autoload": {
@@ -229,7 +229,7 @@
                 }
             ],
             "description": "Container for WordPress Application",
-            "time": "2019-04-01T09:40:46+00:00"
+            "time": "2019-04-09T18:19:58+00:00"
         },
         {
             "name": "haydenpierce/class-finder",
@@ -617,16 +617,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v4.2.4",
+            "version": "v4.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "7f70d79c7a24a94f8e98abb988049403a53d7b31"
+                "reference": "0e745ead307d5dcd4e163e94a47ec04b1428943f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/7f70d79c7a24a94f8e98abb988049403a53d7b31",
-                "reference": "7f70d79c7a24a94f8e98abb988049403a53d7b31",
+                "url": "https://api.github.com/repos/symfony/config/zipball/0e745ead307d5dcd4e163e94a47ec04b1428943f",
+                "reference": "0e745ead307d5dcd4e163e94a47ec04b1428943f",
                 "shasum": ""
             },
             "require": {
@@ -676,11 +676,11 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2019-02-23T15:17:42+00:00"
+            "time": "2019-04-01T14:03:25+00:00"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v4.2.4",
+            "version": "v4.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
@@ -955,16 +955,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.2.4",
+            "version": "v4.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "761fa560a937fd7686e5274ff89dcfa87a5047df"
+                "reference": "6712daf03ee25b53abb14e7e8e0ede1a770efdb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/761fa560a937fd7686e5274ff89dcfa87a5047df",
-                "reference": "761fa560a937fd7686e5274ff89dcfa87a5047df",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/6712daf03ee25b53abb14e7e8e0ede1a770efdb1",
+                "reference": "6712daf03ee25b53abb14e7e8e0ede1a770efdb1",
                 "shasum": ""
             },
             "require": {
@@ -1010,7 +1010,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2019-02-23T15:17:42+00:00"
+            "time": "2019-03-30T15:58:42+00:00"
         },
         {
             "name": "twig/extensions",
@@ -1138,7 +1138,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "graft/wp-container": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

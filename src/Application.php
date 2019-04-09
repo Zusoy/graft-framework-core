@@ -8,7 +8,7 @@ use Graft\Framework\Component\Factory;
 use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Graft\Framework\Exception\ConfigurationHandlerException;
 use Graft\Framework\MainConfigurationHandler;
-use Graft\Framework\Container;
+use Graft\Container\WPContainer;
 use Graft\Framework\Plugin;
 use DI\ContainerBuilder;
 use \ReflectionClass;
@@ -87,7 +87,7 @@ abstract class Application
     /**
      * Application Container
      *
-     * @var Container
+     * @var WPContainer
      */
     protected $container;
 
@@ -272,7 +272,7 @@ abstract class Application
     /**
      * Get Application Container
      *
-     * @return Container
+     * @return WPContainer
      */
     public function getContainer()
     {
@@ -390,7 +390,7 @@ abstract class Application
         $appNamespace = $this->getConfigNode("application", "namespace");
         $factory = new Factory($appNamespace);
 
-        $containerBuilder = new ContainerBuilder(Container::class);
+        $containerBuilder = new ContainerBuilder(WPContainer::class);
         $containerBuilder->useAnnotations(false); //disable PHP-DI Annotations
         $containerBuilder->useAutowiring(true);
         $container = $containerBuilder->build();
