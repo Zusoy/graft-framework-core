@@ -82,6 +82,9 @@ class MyHookManager
     /**
      * This Method will be add to 'the_title' Filter by Annotation
      * 
+     * And 'the_title' Filter will be added in the Plugin Container
+     * for other developers who want to know wich Hooks this Plugin using.
+     * 
      * @Filter(name="the_title")
      * 
      * @param string $title Current Title
