@@ -2,10 +2,6 @@
 
 namespace Graft\Framework\Component;
 
-use \ReflectionClass;
-use \ReflectionMethod;
-use \ReflectionProperty;
-use Graft\Framework\ObjectReference;
 use Graft\Framework\Common\AbstractAnnotation;
 use Graft\Framework\Definition\FactoryInterface;
 use Graft\Framework\Exception\AnnotationTransgressedExclusion;
@@ -13,6 +9,9 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Graft\Container\WPContainer;
+use \ReflectionClass;
+use \ReflectionMethod;
+use \ReflectionProperty;
 
 /**
  * Factory Component
