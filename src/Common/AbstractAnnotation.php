@@ -3,7 +3,7 @@
 namespace Graft\Framework\Common;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Graft\Framework\Component\Container;
+use Graft\Container\WPContainer;
 use \ReflectionClass;
 use \ReflectionMethod;
 use \ReflectionProperty;
@@ -53,7 +53,7 @@ abstract class AbstractAnnotation
     /**
      * Current Application Container
      *
-     * @var Container
+     * @var WPContainer
      */
     protected $container;
 
@@ -190,11 +190,11 @@ abstract class AbstractAnnotation
     /**
      * Set Current Application Container
      *
-     * @param Container $container Current Application Container
+     * @param WPContainer $container Current Application Container
      * 
      * @return self
      */
-    public function setContainer(Container $container)
+    public function setContainer(WPContainer $container)
     {
         $this->container = $container;
 
@@ -205,7 +205,7 @@ abstract class AbstractAnnotation
     /**
      * Get Current Application Container
      *
-     * @return Container
+     * @return WPContainer
      */
     public function getContainer()
     {

@@ -2,7 +2,7 @@
 
 namespace Graft\Framework\Definition;
 
-use Graft\Framework\Component\Container;
+use Graft\Container\WPContainer;
 use \ReflectionClass;
 
 /**
@@ -19,11 +19,11 @@ interface FactoryInterface
     /**
      * Build Application Container
      * 
-     * @param Container $container Container to Build
+     * @param WPContainer $container Container to Build
      *
-     * @return Container
+     * @return WPContainer
      */
-    public function build(Container $container);
+    public function build(WPContainer $container);
 
     /**
      * Read Class Annotations

@@ -1,6 +1,6 @@
 <?php
 
-namespace Graft\Framework\Common;
+namespace Graft\Framework\Injectable;
 
 use Graft\Framework\Definition\RendererInterface;
 use Graft\Framework\Definition\TemplateOverrideHandlerInterface;
@@ -15,7 +15,7 @@ use Twig\Environment;
  * Template Rendering
  * 
  * @package  Graft/Common
- * @category Common
+ * @category Injectable
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
  * @since    0.0.5
