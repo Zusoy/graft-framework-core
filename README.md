@@ -42,3 +42,61 @@ In Graft, due to the OOP, all basics WordPress functions like `add_action('wp_he
 All Plugins made with Graft have an Dependency Injection Container (PHP-DI Container) for using autowiring with your Classes or with Graft Injectable Components.
 
 And the container have the list of all WordPress Components used by the Plugin (Action, Filter, Admin Page ...)
+
+
+# Example
+
+This is code example with Graft Framework
+
+```php
+use Graft\Framework\Annotation\Filter;   //use Filter Annotation
+use Graft\Framework\Injectable\Renderer;
+
+/**
+ * Class that will be construct by the Factory
+ * This class can be injected with autowiring in other Class.
+ */
+class MyHookManager
+{
+    /**
+     * HookManager Renderer
+     * Use for Template Rendering
+     * 
+     * @var Renderer
+     */
+    private $renderer;
+
+
+    /**
+     * MyHookManager Constructor
+     * using autowiring for dependency injection
+     * 
+     * @param Renderer $renderer
+     */
+    public function __construct(Renderer $renderer)
+    {
+        $this->renderer = $renderer;
+    }
+
+
+    /**
+     * This Method will be add to 'the_title' Filter by Annotation
+     * 
+     * @Filter(name="the_title")
+     * 
+     * @param string $title Current Title
+     *
+     * @return string
+     */
+    public function titleFilterHook(string $title)
+    {
+        //some example code...
+        $title = trim($title);
+
+        // using Twig for Custom Title HTML...
+        // this template can be override in the Theme in
+        // (wp-content/themes/mytheme/currentPluginName/filter/title.html.twig) for example.
+        return $this->renderer->render('filter/title.html.twig', ['title' => $title]);
+    }
+}
+```
