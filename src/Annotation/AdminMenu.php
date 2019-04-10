@@ -10,6 +10,7 @@ use \ReflectionMethod;
 
 /**
  * WordPress Administration Menu Annotation
+ * Create Administration Menu
  * 
  * @final
  * 
@@ -96,8 +97,6 @@ final class AdminMenu extends AbstractAnnotation
      */
     public function action()
     {
-        $componentid = strtolower("menu:".$this->title);
-
         //create the Menu
         $menuComponent = new WPAdminMenu(
             $this->title,
@@ -109,7 +108,7 @@ final class AdminMenu extends AbstractAnnotation
         );
 
         //add AdminMenu Component in Current Application Container
-        $this->container->register($componentid, $menuComponent);
+        $this->container->addWordPressComponent($menuComponent);
     }
 
 
@@ -121,7 +120,7 @@ final class AdminMenu extends AbstractAnnotation
      * 
      * @see https://www.php.net/manual/fr/class.reflectionmethod.php
      * 
-     * @return int[]|array
+     * @return int[]
      */
     public function getReflectionExclusions()
     {

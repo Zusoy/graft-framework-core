@@ -2,17 +2,16 @@
 
 namespace Graft\Framework\Component;
 
-use \ReflectionClass;
-use \ReflectionMethod;
-use \ReflectionProperty;
-use Graft\Framework\ObjectReference;
-use Graft\Framework\Component\Container;
 use Graft\Framework\Common\AbstractAnnotation;
 use Graft\Framework\Definition\FactoryInterface;
 use Graft\Framework\Exception\AnnotationTransgressedExclusion;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use HaydenPierce\ClassFinder\ClassFinder;
+use Graft\Container\WPContainer;
+use \ReflectionClass;
+use \ReflectionMethod;
+use \ReflectionProperty;
 
 /**
  * Factory Component
@@ -35,7 +34,7 @@ class Factory implements FactoryInterface
     /**
      * Container in Construction
      *
-     * @var Container
+     * @var WPContainer
      */
     protected $container;
 
@@ -64,33 +63,38 @@ class Factory implements FactoryInterface
     /**
      * Build Application Container
      * 
-     * @param Container $container Application Container
+     * @param WPContainer $container Application Container
      *
-     * @return Container
+     * @return WPContainer
      */
-    public function build(Container $container)
+    public function build(WPContainer $container)
     {
         $this->container = $container;
 
-        //get Application classes with Namespace
-        $classes = ClassFinder::getClassesInNamespace(
+        $appClasses = ClassFinder::getClassesInNamespace(
             $this->namespace,
             ClassFinder::RECURSIVE_MODE
         );
 
-        //get all components
-        foreach ($classes as $class)
-        {
-            $reference = new ObjectReference(new $class());
-            $this->container->addObjectReference($reference);
+        $frameworkClasses = ClassFinder::getClassesInNamespace(
+            "Graft\\Framework\\Injectable",
+            ClassFinder::RECURSIVE_MODE
+        );
+
+        //get injectables components from Graft Framework
+        foreach ($frameworkClasses as $class) {
+            $this->container->set($class, \DI\autowire($class));
         }
 
-        //read all components annotations
-        foreach ($this->container->getObjectReferences() as $reference)
-        {
+        //get application components
+        foreach ($appClasses as $class) {
+            $this->container->set($class, \DI\autowire($class));
+
+            $reflection = new ReflectionClass($class);
+            $instance = $this->container->get($class);
             $this->readAnnotations(
-                $reference->getReflection(),
-                $reference->getInstance()
+                $reflection,
+                $instance
             );
         }
 
