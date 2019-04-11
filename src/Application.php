@@ -7,8 +7,8 @@ use Symfony\Component\Yaml\Yaml;
 use Graft\Framework\Component\Factory;
 use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Graft\Framework\Exception\ConfigurationHandlerException;
-use Graft\Framework\MainConfigurationHandler;
-use Graft\Framework\MainContainerConfigurationHandler;
+use Graft\Framework\DefaultApplicationConfigHandler;
+use Graft\Framework\DefaultContainerConfigHandler;
 use Graft\Container\WPContainer;
 use Graft\Framework\Plugin;
 use DI\ContainerBuilder;
@@ -104,7 +104,7 @@ abstract class Application
 
         //setup Application
         $this->setupApplication();
-        $this->setupMainConfiguration();
+        $this->setupDefaultConfiguration();
 
         //add another configuration handler
         if ($handler !== null) {
@@ -339,10 +339,10 @@ abstract class Application
      *
      * @return void
      */
-    private function setupMainConfiguration()
+    private function setupDefaultConfiguration()
     {
-        $mainConfigHandler = new MainConfigurationHandler();
-        $mainContainerConfigHandler = new MainContainerConfigurationHandler();
+        $mainConfigHandler = new DefaultApplicationConfigHandler();
+        $mainContainerConfigHandler = new DefaultContainerConfigHandler();
 
         //get main handlers file directory
         $configDir = ($this->isPlugin())

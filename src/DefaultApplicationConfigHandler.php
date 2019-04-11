@@ -6,17 +6,17 @@ use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
- * Main Configuration Handler
+ * Default Application Configuration Handler
  * 
  * @final
  * 
  * @package  Graft
- * @category BaseComponent
+ * @category DefaultComponent
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
  * @since    0.0.2
  */
-final class MainConfigurationHandler implements ConfigurationHandlerInterface
+final class DefaultApplicationConfigHandler implements ConfigurationHandlerInterface
 {
     /**
      * Configuration File Directory
