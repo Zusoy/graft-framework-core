@@ -395,6 +395,12 @@ abstract class Application
         $containerBuilder->useAutowiring(true);
         $container = $containerBuilder->build();
 
+        //add container parameters from container config file
+        $parameters = Plugin::getCurrent()->getConfigNode('container', 'parameters');
+        if (count($parameters) > 0) {
+            $container->addParameters($parameters);
+        }
+
         $this->container = $factory->build($container);
     }
 }
