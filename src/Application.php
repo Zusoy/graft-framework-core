@@ -8,6 +8,7 @@ use Graft\Framework\Component\Factory;
 use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Graft\Framework\Exception\ConfigurationHandlerException;
 use Graft\Framework\MainConfigurationHandler;
+use Graft\Framework\MainContainerConfigurationHandler;
 use Graft\Container\WPContainer;
 use Graft\Framework\Plugin;
 use DI\ContainerBuilder;
@@ -334,20 +335,27 @@ abstract class Application
 
 
     /**
-     * Setup Main Application Configuration
+     * Setup Default Application Configuration
      *
      * @return void
      */
     private function setupMainConfiguration()
     {
         $mainConfigHandler = new MainConfigurationHandler();
+        $mainContainerConfigHandler = new MainContainerConfigurationHandler();
+
+        //get main handlers file directory
         $configDir = ($this->isPlugin())
             ? ComposerLocator::getRootPath() . "/config/"
             : ComposerLocator::getRootPath() . "/config/bundles/";
-        $mainConfigHandler->setDirectory($configDir);
         
-        //add default application configuration handler
-        $this->addConfigHandler($mainConfigHandler);
+        //set main handlers directory
+        $mainConfigHandler->setDirectory($configDir);
+        $mainContainerConfigHandler->setDirectory($configDir);
+        
+        //add defaults application configuration handlers
+        $this->addConfigHandler($mainConfigHandler)
+            ->addConfigHandler($mainContainerConfigHandler);
     }
 
 
