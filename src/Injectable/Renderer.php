@@ -4,7 +4,7 @@ namespace Graft\Framework\Injectable;
 
 use Graft\Framework\Definition\RendererInterface;
 use Graft\Framework\Definition\TemplateOverrideHandlerInterface;
-use Graft\Framework\MainTemplateOverrideHandler;
+use Graft\Framework\DefaultTemplateOverrideHandler;
 use Graft\Framework\Twig\WordpressTwigExtension;
 use Graft\Framework\Plugin;
 use Twig\Loader\FilesystemLoader;
@@ -71,7 +71,7 @@ class Renderer implements RendererInterface
     public function __construct()
     {
         //set default Template Override Handler
-        $this->setTemplateOverrideHandler(new MainTemplateOverrideHandler());
+        $this->setTemplateOverrideHandler(new DefaultTemplateOverrideHandler());
         $this->initTwigEnvironments();
 
         //add WordPress Twig Extensions Functions

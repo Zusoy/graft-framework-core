@@ -2,24 +2,24 @@
 
 namespace Graft\Framework;
 
-use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Graft\Framework\Definition\ConfigurationHandlerInterface;
 
 /**
- * Main Configuration Handler
+ * Default Container Configuration Handler
  * 
  * @final
  * 
  * @package  Graft
- * @category BaseComponent
+ * @category DefaultComponent
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
- * @since    0.0.2
+ * @since    0.0.7
  */
-final class MainConfigurationHandler implements ConfigurationHandlerInterface
+final class DefaultContainerConfigHandler implements ConfigurationHandlerInterface
 {
     /**
-     * Configuration File Directory
+     * Container Configuration File Directory
      *
      * @var string
      */
@@ -33,7 +33,7 @@ final class MainConfigurationHandler implements ConfigurationHandlerInterface
      */
     public function getConfigName()
     {
-        return "application";
+        return 'container';   
     }
 
 
@@ -44,7 +44,7 @@ final class MainConfigurationHandler implements ConfigurationHandlerInterface
      */
     public function getConfigFile()
     {
-        return $this->directory . "application.yaml";
+        return $this->directory . "container.yaml";
     }
 
 
@@ -55,27 +55,23 @@ final class MainConfigurationHandler implements ConfigurationHandlerInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder("application");
+        $treeBuilder = new TreeBuilder("container");
         
         //add nodes definitions
         $treeBuilder->getRootNode()
             ->children()
-                ->arrayNode('application')
+                ->arrayNode('container')
                     ->children()
-                    ->booleanNode('dev')
+                    ->arrayNode('parameters')
+                        ->prototype('scalar')
+                            ->cannotBeEmpty()
+                        ->end()
+                    ->end()
+                    ->booleanNode('autowiring')
                         ->defaultTrue()
                     ->end()
-                    ->scalarNode('capability')
-                        ->cannotBeEmpty()->defaultValue('manage_options')
-                    ->end()
-                    ->scalarNode('asset_dir')
-                        ->cannotBeEmpty()->defaultValue('assets/')
-                    ->end()
-                    ->scalarNode('template_dir')
-                        ->cannotBeEmpty()->defaultValue('templates/')
-                    ->end()
-                    ->scalarNode('namespace')
-                        ->cannotBeEmpty()->defaultValue('App')
+                    ->booleanNode('annotation')
+                        ->defaultFalse()
                     ->end()
                 ->end()
             ->end();
@@ -85,9 +81,9 @@ final class MainConfigurationHandler implements ConfigurationHandlerInterface
 
 
     /**
-     * Set Main ConfigurationHandler Directory
+     * Set Container Configuration Directory
      *
-     * @param string $directory The Config File's Directory
+     * @param string $directory Container Configuration File Directory
      * 
      * @return self
      */
@@ -100,7 +96,7 @@ final class MainConfigurationHandler implements ConfigurationHandlerInterface
 
 
     /**
-     * Get Main ConfigurationHandler File Directory
+     * Get Container Configuration Directory
      *
      * @return string
      */

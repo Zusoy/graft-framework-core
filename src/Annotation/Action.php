@@ -87,12 +87,7 @@ final class Action extends AbstractAnnotation
         $this->container->addWordPressComponent($actionComponent);
 
         //hook to WordPress Action
-        \add_action(
-            $this->name,
-            [$this->instance, $this->method->getName()],
-            $this->priority,
-            $this->params
-        );
+        $actionComponent->hook();
     }
 
 

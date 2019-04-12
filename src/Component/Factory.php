@@ -9,6 +9,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Graft\Container\WPContainer;
+use Graft\Framework\Plugin;
 use \ReflectionClass;
 use \ReflectionMethod;
 use \ReflectionProperty;
@@ -70,6 +71,7 @@ class Factory implements FactoryInterface
     public function build(WPContainer $container)
     {
         $this->container = $container;
+        $autowired = Plugin::getCurrent()->getConfigNode('container', 'autowiring');
 
         $appClasses = ClassFinder::getClassesInNamespace(
             $this->namespace,
@@ -83,12 +85,20 @@ class Factory implements FactoryInterface
 
         //get injectables components from Graft Framework
         foreach ($frameworkClasses as $class) {
-            $this->container->set($class, \DI\autowire($class));
+            if ($autowired) {
+                $this->container->set($class, \DI\autowire($class));
+            } else {
+                $this->container->set($class, \DI\create($class));
+            }
         }
 
         //get application components
         foreach ($appClasses as $class) {
-            $this->container->set($class, \DI\autowire($class));
+            if ($autowired) {
+                $this->container->set($class, \DI\autowire($class));
+            } else {
+                $this->container->set($class, \DI\create($class));
+            }
 
             $reflection = new ReflectionClass($class);
             $instance = $this->container->get($class);
