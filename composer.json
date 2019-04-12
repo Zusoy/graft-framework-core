@@ -22,7 +22,7 @@
         "twig/twig": "^2.7",
         "mindplay/composer-locator": "^2.1",
         "haydenpierce/class-finder": "^0.3.1",
-        "graft/wp-container": "dev-develop",
+        "graft/wp-container": "^0.0.4",
         "twig/extensions": "^1.5"
     }
 }
