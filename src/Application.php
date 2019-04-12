@@ -399,9 +399,17 @@ abstract class Application
         $factory = new Factory($appNamespace);
 
         $containerBuilder = new ContainerBuilder(WPContainer::class);
-        $containerBuilder->useAnnotations(false); //disable PHP-DI Annotations
-        $containerBuilder->useAutowiring(true);
+        $containerBuilder->useAnnotations(
+            Plugin::getCurrent()->getConfigNode('container', 'annotation')
+        );
+        $containerBuilder->useAutowiring(
+            Plugin::getCurrent()->getConfigNode('container', 'autowiring')
+        );
         $container = $containerBuilder->build();
+
+        //add parameters in container from config file
+        $parameters = Plugin::getCurrent()->getConfigNode('container', 'parameters');
+        $container->addParameters($parameters);
 
         $this->container = $factory->build($container);
     }

@@ -67,6 +67,12 @@ final class DefaultContainerConfigHandler implements ConfigurationHandlerInterfa
                             ->cannotBeEmpty()
                         ->end()
                     ->end()
+                    ->booleanNode('autowiring')
+                        ->defaultTrue()
+                    ->end()
+                    ->booleanNode('annotation')
+                        ->defaultFalse()
+                    ->end()
                 ->end()
             ->end();
 

@@ -199,12 +199,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Zusoy/graft-wp-container.git",
-                "reference": "6bdfa044af1177685db4a3588aff8d9c9d69e844"
+                "reference": "9e3f09c121113eed9bf51821c84bf07efeeaefb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Zusoy/graft-wp-container/zipball/6bdfa044af1177685db4a3588aff8d9c9d69e844",
-                "reference": "6bdfa044af1177685db4a3588aff8d9c9d69e844",
+                "url": "https://api.github.com/repos/Zusoy/graft-wp-container/zipball/9e3f09c121113eed9bf51821c84bf07efeeaefb5",
+                "reference": "9e3f09c121113eed9bf51821c84bf07efeeaefb5",
                 "shasum": ""
             },
             "require": {
@@ -229,7 +229,7 @@
                 }
             ],
             "description": "Container for WordPress Application",
-            "time": "2019-04-11T10:32:41+00:00"
+            "time": "2019-04-11T20:59:15+00:00"
         },
         {
             "name": "haydenpierce/class-finder",
