@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8763ecf060173959e37f4fb50b0087c7",
+    "content-hash": "08e6cb32ceb45253c20b115455e04626",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -195,16 +195,16 @@
         },
         {
             "name": "graft/wp-container",
-            "version": "dev-develop",
+            "version": "v0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Zusoy/graft-wp-container.git",
-                "reference": "9e3f09c121113eed9bf51821c84bf07efeeaefb5"
+                "reference": "4b9f08ef679d7bcaea2a2ff1313112bcace74328"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Zusoy/graft-wp-container/zipball/9e3f09c121113eed9bf51821c84bf07efeeaefb5",
-                "reference": "9e3f09c121113eed9bf51821c84bf07efeeaefb5",
+                "url": "https://api.github.com/repos/Zusoy/graft-wp-container/zipball/4b9f08ef679d7bcaea2a2ff1313112bcace74328",
+                "reference": "4b9f08ef679d7bcaea2a2ff1313112bcace74328",
                 "shasum": ""
             },
             "require": {
@@ -229,7 +229,7 @@
                 }
             ],
             "description": "Container for WordPress Application",
-            "time": "2019-04-11T20:59:15+00:00"
+            "time": "2019-04-12T09:27:54+00:00"
         },
         {
             "name": "haydenpierce/class-finder",
@@ -1138,9 +1138,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "graft/wp-container": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
