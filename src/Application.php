@@ -92,6 +92,13 @@ abstract class Application
      */
     protected $container;
 
+    /**
+     * Application Container Definition File
+     *
+     * @var string
+     */
+    protected $containerDefinitionFile;
+
 
     /**
      * Application Constructor
@@ -348,6 +355,9 @@ abstract class Application
         $configDir = ($this->isPlugin())
             ? ComposerLocator::getRootPath() . "/config/"
             : ComposerLocator::getRootPath() . "/config/bundles/";
+
+        //get container definition file path
+        $this->containerDefinitionFile = $configDir . "container.php";
         
         //set main handlers directory
         $mainConfigHandler->setDirectory($configDir);
@@ -405,6 +415,12 @@ abstract class Application
         $containerBuilder->useAutowiring(
             Plugin::getCurrent()->getConfigNode('container', 'autowiring')
         );
+        
+        if (\is_file($this->containerDefinitionFile)) {
+            $containerBuilder->addDefinitions(
+                $this->containerDefinitionFile
+            );
+        }
         $container = $containerBuilder->build();
 
         //add parameters in container from config file
