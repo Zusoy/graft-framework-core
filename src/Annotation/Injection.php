@@ -4,7 +4,9 @@ namespace Graft\Framework\Annotation;
 
 use Graft\Framework\Common\AbstractAnnotation;
 use Doctrine\Common\Annotations\Annotation;
+use Graft\Container\Resolver\ParameterValueResolver;
 use \ReflectionMethod;
+use \Exception;
 
 /**
  * Injection Annotation
@@ -25,6 +27,8 @@ final class Injection extends AbstractAnnotation
 {
     /**
      * Parameters Options
+     * 
+     * @Required()
      *
      * @var array
      */
@@ -38,9 +42,7 @@ final class Injection extends AbstractAnnotation
      */
     public function __construct(array $values)
     {
-        $this->parameters = (isset($values['parameters']))
-            ? $values['parameters']
-            : [];
+        $this->parameters = $values['parameters'];
     }
 
 
@@ -51,35 +53,34 @@ final class Injection extends AbstractAnnotation
      */
     public function action()
     {
-        //injection not supported on Constructor
-        if ($this->method->isConstructor()) {
-            return;
+        $resolver = new ParameterValueResolver();
+        $methodParameters = $this->method->getParameters();
+        $injectParameters = [];
+
+        foreach ($methodParameters as $methodParam) {
+            $name = $methodParam->getName();
+            $injectionParam = (isset($this->parameters[$name]))
+                ? $this->parameters[$name]
+                : null;
+            
+            if ($injectionParam !== null) {
+                //try to resolve Container Parameter
+                $containerParam = $resolver->resolveParameter(
+                    $injectionParam,
+                    $this->container
+                );
+
+                $newParam = ($containerParam !== null)
+                    ? $containerParam->getValue()
+                    : $injectionParam;
+
+                $injectParameters[] = $newParam;
+            }
         }
 
-        $parameters = $this->method->getParameters();
-        $components = [];
-
-        foreach ($parameters as $parameter)
-        {
-            $class = $parameter->getType()->getName();
-            $component = $this->container->getComponentByClassName($class);
-
-            if ($component !== null)
-            {
-                $components[] = $component->getInstance();
-            }
-            else
-            {
-                //check for injected parameters
-                if (isset($this->parameters[$parameter->getName()])){
-                    $components[] = $this->parameters[$parameter->getName()];
-                }
-            }
-        }
-
-        if (\count($components) > 0) {
-            //call the method with components as parameter
-            $this->instance->{$this->method->getName()}(...$components);
+        //inject parameters into method
+        if (\count($injectParameters) > 0) {
+            $this->instance->{$this->method->getName()}(...$injectParameters);
         }
     }
 

@@ -7,7 +7,8 @@ use Symfony\Component\Yaml\Yaml;
 use Graft\Framework\Component\Factory;
 use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Graft\Framework\Exception\ConfigurationHandlerException;
-use Graft\Framework\MainConfigurationHandler;
+use Graft\Framework\DefaultApplicationConfigHandler;
+use Graft\Framework\DefaultContainerConfigHandler;
 use Graft\Container\WPContainer;
 use Graft\Framework\Plugin;
 use DI\ContainerBuilder;
@@ -91,6 +92,13 @@ abstract class Application
      */
     protected $container;
 
+    /**
+     * Application Container Definition File
+     *
+     * @var string
+     */
+    protected $containerDefinitionFile;
+
 
     /**
      * Application Constructor
@@ -103,7 +111,7 @@ abstract class Application
 
         //setup Application
         $this->setupApplication();
-        $this->setupMainConfiguration();
+        $this->setupDefaultConfiguration();
 
         //add another configuration handler
         if ($handler !== null) {
@@ -334,20 +342,30 @@ abstract class Application
 
 
     /**
-     * Setup Main Application Configuration
+     * Setup Default Application Configuration
      *
      * @return void
      */
-    private function setupMainConfiguration()
+    private function setupDefaultConfiguration()
     {
-        $mainConfigHandler = new MainConfigurationHandler();
+        $mainConfigHandler = new DefaultApplicationConfigHandler();
+        $mainContainerConfigHandler = new DefaultContainerConfigHandler();
+
+        //get main handlers file directory
         $configDir = ($this->isPlugin())
             ? ComposerLocator::getRootPath() . "/config/"
             : ComposerLocator::getRootPath() . "/config/bundles/";
-        $mainConfigHandler->setDirectory($configDir);
+
+        //get container definition file path
+        $this->containerDefinitionFile = $configDir . "container.php";
         
-        //add default application configuration handler
-        $this->addConfigHandler($mainConfigHandler);
+        //set main handlers directory
+        $mainConfigHandler->setDirectory($configDir);
+        $mainContainerConfigHandler->setDirectory($configDir);
+        
+        //add defaults application configuration handlers
+        $this->addConfigHandler($mainConfigHandler)
+            ->addConfigHandler($mainContainerConfigHandler);
     }
 
 
@@ -391,9 +409,23 @@ abstract class Application
         $factory = new Factory($appNamespace);
 
         $containerBuilder = new ContainerBuilder(WPContainer::class);
-        $containerBuilder->useAnnotations(false); //disable PHP-DI Annotations
-        $containerBuilder->useAutowiring(true);
+        $containerBuilder->useAnnotations(
+            Plugin::getCurrent()->getConfigNode('container', 'annotation')
+        );
+        $containerBuilder->useAutowiring(
+            Plugin::getCurrent()->getConfigNode('container', 'autowiring')
+        );
+        
+        if (\is_file($this->containerDefinitionFile)) {
+            $containerBuilder->addDefinitions(
+                $this->containerDefinitionFile
+            );
+        }
         $container = $containerBuilder->build();
+
+        //add parameters in container from config file
+        $parameters = Plugin::getCurrent()->getConfigNode('container', 'parameters');
+        $container->addParameters($parameters);
 
         $this->container = $factory->build($container);
     }
