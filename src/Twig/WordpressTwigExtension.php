@@ -11,7 +11,7 @@ use Twig\TwigFunction;
  * 
  * @final
  * 
- * @package  Graft/Twig
+ * @package  GraftFramework
  * @category TwigExtension
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT

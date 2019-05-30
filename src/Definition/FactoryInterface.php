@@ -8,7 +8,7 @@ use \ReflectionClass;
 /**
  * Factory Interface
  * 
- * @package  Graft/Definition
+ * @package  GraftFramework
  * @category Definition
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT

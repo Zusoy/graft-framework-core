@@ -19,7 +19,7 @@ use \ComposerLocator;
  * 
  * @abstract
  * 
- * @package  Graft
+ * @package  GraftFramework
  * @category Framework
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT

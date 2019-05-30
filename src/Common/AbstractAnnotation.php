@@ -14,7 +14,7 @@ use \ReflectionProperty;
  * 
  * @abstract
  * 
- * @package  Graft/Common
+ * @package  GraftFramework
  * @category Common
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT

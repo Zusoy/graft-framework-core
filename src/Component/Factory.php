@@ -16,7 +16,7 @@ use \ReflectionProperty;
 /**
  * Factory Component
  * 
- * @package  Graft/Component
+ * @package  GraftFramework
  * @category Component
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT

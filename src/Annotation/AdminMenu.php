@@ -17,7 +17,7 @@ use \ReflectionMethod;
  * @Annotation()
  * @Target("METHOD")
  * 
- * @package  Graft/Annotation
+ * @package  GraftFramework
  * @category Annotation
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT

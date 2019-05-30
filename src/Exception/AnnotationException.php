@@ -7,7 +7,7 @@ use \Exception;
 /**
  * Annotation Exception
  * 
- * @package  Graft/Exception
+ * @package  GraftFramework
  * @category Exception
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
