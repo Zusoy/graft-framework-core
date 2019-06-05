@@ -7,7 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 use Graft\Framework\Component\Factory;
 use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Graft\Framework\Exception\ConfigurationHandlerException;
-use Graft\Framework\MainConfigurationHandler;
+use Graft\Framework\DefaultApplicationConfigHandler;
 use Graft\Container\WPContainer;
 use Graft\Framework\Plugin;
 use DI\ContainerBuilder;
@@ -340,7 +340,7 @@ abstract class Application
      */
     private function setupMainConfiguration()
     {
-        $mainConfigHandler = new MainConfigurationHandler();
+        $mainConfigHandler = new DefaultApplicationConfigHandler();
         $configDir = ($this->isPlugin())
             ? ComposerLocator::getRootPath() . "/config/"
             : ComposerLocator::getRootPath() . "/config/bundles/";
