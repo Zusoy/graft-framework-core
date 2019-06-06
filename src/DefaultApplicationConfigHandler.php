@@ -6,17 +6,17 @@ use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
- * Main Configuration Handler
+ * Default Application Configuration Handler
  * 
  * @final
  * 
- * @package  Graft
- * @category BaseComponent
+ * @package  GraftFramework
+ * @category DefaultComponent
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
  * @since    0.0.2
  */
-final class MainConfigurationHandler implements ConfigurationHandlerInterface
+final class DefaultApplicationConfigHandler implements ConfigurationHandlerInterface
 {
     /**
      * Configuration File Directory
@@ -68,20 +68,11 @@ final class MainConfigurationHandler implements ConfigurationHandlerInterface
                     ->scalarNode('capability')
                         ->cannotBeEmpty()->defaultValue('manage_options')
                     ->end()
-                    ->scalarNode('controller_dir')
-                        ->cannotBeEmpty()->defaultValue('src/Controller/')
-                    ->end()
-                    ->scalarNode('entity_dir')
-                        ->cannotBeEmpty()->defaultValue('src/Entity/')
-                    ->end()
                     ->scalarNode('asset_dir')
                         ->cannotBeEmpty()->defaultValue('assets/')
                     ->end()
                     ->scalarNode('template_dir')
                         ->cannotBeEmpty()->defaultValue('templates/')
-                    ->end()
-                    ->scalarNode('shortcode_dir')
-                        ->cannotBeEmpty()->defaultValue('src/Shortcode/')
                     ->end()
                     ->scalarNode('namespace')
                         ->cannotBeEmpty()->defaultValue('App')

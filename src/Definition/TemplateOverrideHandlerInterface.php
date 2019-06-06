@@ -5,7 +5,7 @@ namespace Graft\Framework\Definition;
 /**
  * Template Override Handler
  * 
- * @package  Graft/Definition
+ * @package  GraftFramework
  * @category Definition
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
