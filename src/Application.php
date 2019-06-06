@@ -8,18 +8,18 @@ use Graft\Framework\Component\Factory;
 use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Graft\Framework\Exception\ConfigurationHandlerException;
 use Graft\Framework\DefaultApplicationConfigHandler;
+use Graft\Framework\DefaultContainerConfigHandler;
 use Graft\Container\WPContainer;
 use Graft\Framework\Plugin;
 use DI\ContainerBuilder;
 use \ReflectionClass;
-use \ComposerLocator;
 
 /**
  * Graft Main Application
  * 
  * @abstract
  * 
- * @package  GraftFramework
+ * @package  Graft
  * @category Framework
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
@@ -91,6 +91,13 @@ abstract class Application
      */
     protected $container;
 
+    /**
+     * Application Container Definition File
+     *
+     * @var string
+     */
+    protected $containerDefinitionFile;
+
 
     /**
      * Application Constructor
@@ -103,7 +110,7 @@ abstract class Application
 
         //setup Application
         $this->setupApplication();
-        $this->setupMainConfiguration();
+        $this->setupDefaultConfiguration();
 
         //add another configuration handler
         if ($handler !== null) {
@@ -294,6 +301,19 @@ abstract class Application
 
 
     /**
+     * Get Application Configuration Directory
+     *
+     * @return string
+     */
+    public function getConfigDirectory()
+    {
+        return ($this->isPlugin())
+            ? \plugin_dir_path($this->reflection->getFileName()) . "config/"
+            : \plugin_dir_path($this->reflection->getFileName()) . "config/bundles/";
+    }
+
+
+    /**
      * Check if Application is an Plugin
      *
      * @return boolean
@@ -334,25 +354,27 @@ abstract class Application
 
 
     /**
-     * Setup Main Application Configuration
+     * Setup Default Application Configuration
      *
      * @return void
      */
-    private function setupMainConfiguration()
+    private function setupDefaultConfiguration()
     {
         $mainConfigHandler = new DefaultApplicationConfigHandler();
-        $configDir = ($this->isPlugin())
-            ? ComposerLocator::getRootPath() . "/config/"
-            : ComposerLocator::getRootPath() . "/config/bundles/";
-        $mainConfigHandler->setDirectory($configDir);
+        $mainContainerConfigHandler = new DefaultContainerConfigHandler();
+        $configDir = $this->getConfigDirectory();
+
+        //set PHP-DI PHP configuration File
+        $this->containerDefinitionFile = $configDir . "container.php";
         
-        //add default application configuration handler
-        $this->addConfigHandler($mainConfigHandler);
+        //add defaults application configuration handlers
+        $this->addConfigHandler($mainConfigHandler)
+            ->addConfigHandler($mainContainerConfigHandler);
     }
 
 
     /**
-     * Process the Application Configuration
+     * Process the Application Configurations
      *
      * @return void
      */
@@ -362,7 +384,9 @@ abstract class Application
 
         foreach ($this->configHandlers as $configHandler)
         {
-            $file = $configHandler->getConfigFile();
+            $file = $configHandler->getConfigFile(
+                $this->getConfigDirectory()
+            );
             
             $config = Yaml::parse(
                 \file_get_contents($file)
@@ -391,15 +415,23 @@ abstract class Application
         $factory = new Factory($appNamespace);
 
         $containerBuilder = new ContainerBuilder(WPContainer::class);
-        $containerBuilder->useAnnotations(false); //disable PHP-DI Annotations
-        $containerBuilder->useAutowiring(true);
+        $containerBuilder->useAnnotations(
+            $this->getConfigNode('container', 'annotation')
+        );
+        $containerBuilder->useAutowiring(
+            $this->getConfigNode('container', 'autowiring')
+        );
+        
+        if (\is_file($this->containerDefinitionFile)) {
+            $containerBuilder->addDefinitions(
+                $this->containerDefinitionFile
+            );
+        }
         $container = $containerBuilder->build();
 
-        //add container parameters from container config file
-        $parameters = Plugin::getCurrent()->getConfigNode('container', 'parameters');
-        if (count($parameters) > 0) {
-            $container->addParameters($parameters);
-        }
+        //add parameters in container from config file
+        $parameters = $this->getConfigNode('container', 'parameters');
+        $container->addParameters($parameters);
 
         $this->container = $factory->build($container);
     }
