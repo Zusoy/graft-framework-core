@@ -19,14 +19,6 @@ use Graft\Framework\Definition\ConfigurationHandlerInterface;
 final class DefaultContainerConfigHandler implements ConfigurationHandlerInterface
 {
     /**
-     * Container Configuration File Directory
-     *
-     * @var string
-     */
-    private $directory;
-
-
-    /**
      * Get Configuration Name
      *
      * @return string
@@ -39,12 +31,14 @@ final class DefaultContainerConfigHandler implements ConfigurationHandlerInterfa
 
     /**
      * Get Configuration File
+     * 
+     * @param string $configDir Current Application Configuration Directory
      *
      * @return string
      */
-    public function getConfigFile()
+    public function getConfigFile(string $configDir)
     {
-        return $this->directory . "container.yaml";
+        return $configDir . "container.yaml";
     }
 
 
@@ -67,35 +61,15 @@ final class DefaultContainerConfigHandler implements ConfigurationHandlerInterfa
                             ->cannotBeEmpty()
                         ->end()
                     ->end()
+                    ->booleanNode('autowiring')
+                        ->defaultTrue()
+                    ->end()
+                    ->booleanNode('annotation')
+                        ->defaultFalse()
+                    ->end()
                 ->end()
             ->end();
 
         return $treeBuilder;
-    }
-
-
-    /**
-     * Set Container Configuration Directory
-     *
-     * @param string $directory Container Configuration File Directory
-     * 
-     * @return self
-     */
-    public function setDirectory(string $directory)
-    {
-        $this->directory = $directory;
-
-        return $this;
-    }
-
-
-    /**
-     * Get Container Configuration Directory
-     *
-     * @return string
-     */
-    public function getDirectory()
-    {
-        return $this->directory;
     }
 }

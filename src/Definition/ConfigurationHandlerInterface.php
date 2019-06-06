@@ -25,8 +25,10 @@ interface ConfigurationHandlerInterface extends ConfigurationInterface
 
     /**
      * Get Configuration File
+     * 
+     * @param string $configDir Current Application Configuration Directory
      *
      * @return string
      */
-    public function getConfigFile();
+    public function getConfigFile(string $configDir);
 }

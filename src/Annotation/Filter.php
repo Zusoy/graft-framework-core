@@ -87,12 +87,7 @@ final class Filter extends AbstractAnnotation
         $this->container->addWordPressComponent($filterComponent);
 
         //hook to WordPress Filter
-        \add_filter(
-            $this->name,
-            [$this->instance, $this->method->getName()],
-            $this->priority,
-            $this->params
-        );
+        $filterComponent->hook();
     }
 
 

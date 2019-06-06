@@ -19,14 +19,6 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 final class DefaultApplicationConfigHandler implements ConfigurationHandlerInterface
 {
     /**
-     * Configuration File Directory
-     *
-     * @var string
-     */
-    private $directory;
-
-
-    /**
      * Get Configuration Name
      *
      * @return string
@@ -39,12 +31,14 @@ final class DefaultApplicationConfigHandler implements ConfigurationHandlerInter
 
     /**
      * Get Configuration File
+     * 
+     * @param string $configDir Current Application Configuration Directory
      *
      * @return string
      */
-    public function getConfigFile()
+    public function getConfigFile(string $configDir)
     {
-        return $this->directory . "application.yaml";
+        return $configDir . "application.yaml";
     }
 
 
@@ -81,31 +75,5 @@ final class DefaultApplicationConfigHandler implements ConfigurationHandlerInter
             ->end();
 
         return $treeBuilder;
-    }
-
-
-    /**
-     * Set Main ConfigurationHandler Directory
-     *
-     * @param string $directory The Config File's Directory
-     * 
-     * @return self
-     */
-    public function setDirectory(string $directory)
-    {
-        $this->directory = $directory;
-
-        return $this;
-    }
-
-
-    /**
-     * Get Main ConfigurationHandler File Directory
-     *
-     * @return string
-     */
-    public function getDirectory()
-    {
-        return $this->directory;
     }
 }

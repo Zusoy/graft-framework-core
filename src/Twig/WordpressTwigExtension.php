@@ -2,7 +2,6 @@
 
 namespace Graft\Framework\Twig;
 
-use Graft\Framework\Plugin;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
