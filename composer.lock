@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91a4bc823d776d99f58b99636ed9c574",
+    "content-hash": "e48089bc5fba895e18c90d04b870fd6c",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -241,16 +241,16 @@
         },
         {
             "name": "haydenpierce/class-finder",
-            "version": "0.3.3",
+            "version": "v0.4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/hpierce1102/ClassFinder.git",
-                "reference": "35ecd4bd9a44e406804d99dee79ffb8c96fb0705"
+                "reference": "bc50571d29dd7590feb445d691f32eec48fe8c34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/hpierce1102%2FClassFinder/repository/archive.zip?sha=35ecd4bd9a44e406804d99dee79ffb8c96fb0705",
-                "reference": "35ecd4bd9a44e406804d99dee79ffb8c96fb0705",
+                "url": "https://gitlab.com/api/v4/projects/hpierce1102%2FClassFinder/repository/archive.zip?sha=bc50571d29dd7590feb445d691f32eec48fe8c34",
+                "reference": "bc50571d29dd7590feb445d691f32eec48fe8c34",
                 "shasum": ""
             },
             "require": {
@@ -278,8 +278,7 @@
                     "email": "hayden@haydenpierce.com"
                 }
             ],
-            "description": "A library that can provide of a list of classes in a given namespace",
-            "time": "2019-07-14T15:19:06+00:00"
+            "time": "2019-01-01T03:10:02+00:00"
         },
         {
             "name": "jeremeamia/superclosure",
@@ -1106,7 +1105,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "haydenpierce/class-finder": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
