@@ -7,8 +7,9 @@ use Graft\Framework\Definition\FactoryInterface;
 use Graft\Framework\Exception\AnnotationTransgressedExclusion;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use HaydenPierce\ClassFinder\ClassFinder;
 use Graft\Container\WPContainer;
+use Graft\Framework\Plugin;
+use Gears\ClassFinder;
 use \ReflectionClass;
 use \ReflectionMethod;
 use \ReflectionProperty;
@@ -16,7 +17,7 @@ use \ReflectionProperty;
 /**
  * Factory Component
  * 
- * @package  Graft/Component
+ * @package  GraftFramework
  * @category Component
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
@@ -69,26 +70,39 @@ class Factory implements FactoryInterface
      */
     public function build(WPContainer $container)
     {
+        if (!defined('ABSPATH')){
+            exit();
+        }
+        
+        $pluginslug = \str_replace(" ", "", \strtolower(Plugin::getCurrent()->getName()));
         $this->container = $container;
+        
+        $autoloader = (\is_file(ABSPATH . "wp-content/plugins/vendor/autoload.php"))
+            ? require ABSPATH . "wp-content/plugins/vendor/autoload.php"
+            : require Plugin::getCurrent()->getDirectory() . "/vendor/autoload.php";
 
-        $appClasses = ClassFinder::getClassesInNamespace(
-            $this->namespace,
-            ClassFinder::RECURSIVE_MODE
-        );
+        $finder = new ClassFinder($autoloader);
+        $autowired = Plugin::getCurrent()->getConfigNode('container', 'autowiring');
 
-        $frameworkClasses = ClassFinder::getClassesInNamespace(
-            "Graft\\Framework\\Injectable",
-            ClassFinder::RECURSIVE_MODE
-        );
+        $appClasses = $finder->namespace($this->namespace)->search();
+        $frameworkClasses = $finder->namespace("Graft\\Framework\\Injectable")->search();
 
         //get injectables components from Graft Framework
         foreach ($frameworkClasses as $class) {
-            $this->container->set($class, \DI\autowire($class));
+            if ($autowired) {
+                $this->container->set($class, \DI\autowire($class));
+            } else {
+                $this->container->set($class, \DI\create($class));
+            }
         }
 
         //get application components
         foreach ($appClasses as $class) {
-            $this->container->set($class, \DI\autowire($class));
+            if ($autowired) {
+                $this->container->set($class, \DI\autowire($class));
+            } else {
+                $this->container->set($class, \DI\create($class));
+            }
 
             $reflection = new ReflectionClass($class);
             $instance = $this->container->get($class);
@@ -97,6 +111,11 @@ class Factory implements FactoryInterface
                 $instance
             );
         }
+
+        $this->container = \apply_filters(
+            "graft_" . $pluginslug . "_after_build_container",
+            $this->container
+        );
 
         return $this->container;
     }

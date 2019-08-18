@@ -6,26 +6,18 @@ use Graft\Framework\Definition\ConfigurationHandlerInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
- * Main Configuration Handler
+ * Default Application Configuration Handler
  * 
  * @final
  * 
- * @package  Graft
- * @category BaseComponent
+ * @package  GraftFramework
+ * @category DefaultComponent
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
  * @since    0.0.2
  */
-final class MainConfigurationHandler implements ConfigurationHandlerInterface
+final class DefaultApplicationConfigHandler implements ConfigurationHandlerInterface
 {
-    /**
-     * Configuration File Directory
-     *
-     * @var string
-     */
-    private $directory;
-
-
     /**
      * Get Configuration Name
      *
@@ -39,12 +31,14 @@ final class MainConfigurationHandler implements ConfigurationHandlerInterface
 
     /**
      * Get Configuration File
+     * 
+     * @param string $configDir Current Application Configuration Directory
      *
      * @return string
      */
-    public function getConfigFile()
+    public function getConfigFile(string $configDir)
     {
-        return $this->directory . "application.yaml";
+        return $configDir . "application.yaml";
     }
 
 
@@ -68,20 +62,11 @@ final class MainConfigurationHandler implements ConfigurationHandlerInterface
                     ->scalarNode('capability')
                         ->cannotBeEmpty()->defaultValue('manage_options')
                     ->end()
-                    ->scalarNode('controller_dir')
-                        ->cannotBeEmpty()->defaultValue('src/Controller/')
-                    ->end()
-                    ->scalarNode('entity_dir')
-                        ->cannotBeEmpty()->defaultValue('src/Entity/')
-                    ->end()
                     ->scalarNode('asset_dir')
                         ->cannotBeEmpty()->defaultValue('assets/')
                     ->end()
                     ->scalarNode('template_dir')
                         ->cannotBeEmpty()->defaultValue('templates/')
-                    ->end()
-                    ->scalarNode('shortcode_dir')
-                        ->cannotBeEmpty()->defaultValue('src/Shortcode/')
                     ->end()
                     ->scalarNode('namespace')
                         ->cannotBeEmpty()->defaultValue('App')
@@ -90,31 +75,5 @@ final class MainConfigurationHandler implements ConfigurationHandlerInterface
             ->end();
 
         return $treeBuilder;
-    }
-
-
-    /**
-     * Set Main ConfigurationHandler Directory
-     *
-     * @param string $directory The Config File's Directory
-     * 
-     * @return self
-     */
-    public function setDirectory(string $directory)
-    {
-        $this->directory = $directory;
-
-        return $this;
-    }
-
-
-    /**
-     * Get Main ConfigurationHandler File Directory
-     *
-     * @return string
-     */
-    public function getDirectory()
-    {
-        return $this->directory;
     }
 }

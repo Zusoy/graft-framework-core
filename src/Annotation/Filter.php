@@ -16,7 +16,7 @@ use \ReflectionMethod;
  * @Annotation()
  * @Target("METHOD")
  * 
- * @package  Graft/Annotation
+ * @package  GraftFramework
  * @category Annotation
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
@@ -87,12 +87,7 @@ final class Filter extends AbstractAnnotation
         $this->container->addWordPressComponent($filterComponent);
 
         //hook to WordPress Filter
-        \add_filter(
-            $this->name,
-            [$this->instance, $this->method->getName()],
-            $this->priority,
-            $this->params
-        );
+        $filterComponent->hook();
     }
 
 

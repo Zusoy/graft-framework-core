@@ -6,17 +6,17 @@ use Graft\Framework\Definition\TemplateOverrideHandlerInterface;
 use Graft\Framework\Plugin;
 
 /**
- * Main Template Override Handler
+ * Default Template Override Handler
  * 
  * @final
  * 
- * @package  Graft
- * @category BaseComponent
+ * @package  GraftFramework
+ * @category DefaultComponent
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
  * @since    0.0.5
  */
-final class MainTemplateOverrideHandler implements TemplateOverrideHandlerInterface
+final class DefaultTemplateOverrideHandler implements TemplateOverrideHandlerInterface
 {
     /**
      * Check if Template is Overrided

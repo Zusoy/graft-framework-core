@@ -9,7 +9,7 @@ use Graft\Framework\Definition\ConfigurationHandlerInterface;
  * Graft Plugin Class
  * WordPress Plugin must extends this Class
  * 
- * @package  Graft
+ * @package  GraftFramework
  * @category Framework
  * @author   Zusoy <gregoire.drapeau79@gmail.com>
  * @license  MIT
