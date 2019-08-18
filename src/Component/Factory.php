@@ -71,6 +71,8 @@ class Factory implements FactoryInterface
     public function build(WPContainer $container)
     {
         $this->container = $container;
+
+        $pluginslug = \str_replace(" ", "", \strtolower(Plugin::getCurrent()->getName()));
         $autowired = Plugin::getCurrent()->getConfigNode('container', 'autowiring');
 
         $appClasses = ClassFinder::getClassesInNamespace(
@@ -107,6 +109,12 @@ class Factory implements FactoryInterface
                 $instance
             );
         }
+
+        //add filters to container
+        $this->container = \apply_filters(
+            "graft_" . $pluginslug . "_after_build_container",
+            $this->container
+        );
 
         return $this->container;
     }
