@@ -7,9 +7,9 @@ use Graft\Framework\Definition\FactoryInterface;
 use Graft\Framework\Exception\AnnotationTransgressedExclusion;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use HaydenPierce\ClassFinder\ClassFinder;
 use Graft\Container\WPContainer;
 use Graft\Framework\Plugin;
+use Gears\ClassFinder;
 use \ReflectionClass;
 use \ReflectionMethod;
 use \ReflectionProperty;
@@ -70,20 +70,22 @@ class Factory implements FactoryInterface
      */
     public function build(WPContainer $container)
     {
-        $this->container = $container;
-
+        if (!defined('ABSPATH')){
+            exit();
+        }
+        
         $pluginslug = \str_replace(" ", "", \strtolower(Plugin::getCurrent()->getName()));
+        $this->container = $container;
+        
+        $autoloader = (\is_file(ABSPATH . "wp-content/plugins/vendor/autoload.php"))
+            ? require ABSPATH . "wp-content/plugins/vendor/autoload.php"
+            : require Plugin::getCurrent()->getDirectory() . "/vendor/autoload.php";
+
+        $finder = new ClassFinder($autoloader);
         $autowired = Plugin::getCurrent()->getConfigNode('container', 'autowiring');
 
-        $appClasses = ClassFinder::getClassesInNamespace(
-            $this->namespace,
-            ClassFinder::RECURSIVE_MODE
-        );
-
-        $frameworkClasses = ClassFinder::getClassesInNamespace(
-            "Graft\\Framework\\Injectable",
-            ClassFinder::RECURSIVE_MODE
-        );
+        $appClasses = $finder->namespace($this->namespace)->search();
+        $frameworkClasses = $finder->namespace("Graft\\Framework\\Injectable")->search();
 
         //get injectables components from Graft Framework
         foreach ($frameworkClasses as $class) {
@@ -110,7 +112,6 @@ class Factory implements FactoryInterface
             );
         }
 
-        //add filters to container
         $this->container = \apply_filters(
             "graft_" . $pluginslug . "_after_build_container",
             $this->container

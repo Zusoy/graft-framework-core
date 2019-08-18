@@ -20,8 +20,8 @@
         "symfony/yaml": "^4.2",
         "doctrine/annotations": "^1.6",
         "twig/twig": "^2.7",
-        "haydenpierce/class-finder": "^0.3.1",
         "graft/wp-container": "^0.0.5",
-        "twig/extensions": "^1.5"
+        "twig/extensions": "^1.5",
+        "gears/class-finder": "^1.0"
     }
 }
