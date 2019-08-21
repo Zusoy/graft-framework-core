@@ -12,7 +12,7 @@
     "autoload": {
         "psr-4": {
             "Graft\\Framework\\": "./src/",
-            "Graft\\Test\\": "./tests/"
+            "Graft\\Test\\Fake\\": "./tests/fake/"
         }
     },
     "require": {
@@ -24,5 +24,8 @@
         "graft/wp-container": "^0.0.5",
         "twig/extensions": "^1.5",
         "gears/class-finder": "^1.0"
+    },
+    "require-dev": {
+        "frozzare/wp-test-suite": "^1.1"
     }
 }

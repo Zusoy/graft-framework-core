@@ -1,3 +1,5 @@
 /vendor/
 /config/*
+/labo/*
 index.php
+phpunit.xml
