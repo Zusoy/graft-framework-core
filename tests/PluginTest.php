@@ -141,15 +141,28 @@ class PluginTest extends TestCase
      */
     public function testPluginGetConfigNode()
     {
+        //define configuration values
+        $testConfigValues = [
+            "application" => [
+                "dev"       => true,
+                "test"      => "Hello World !",
+                "namespace" => "App"
+            ]
+        ];
+
+        //define test plugin's configurations values using Reflection (private property)
         $reflection = new ReflectionClass($this->corePlugin);
         $configProperty = $reflection->getProperty("config");
+        $configProperty->setAccessible(true); //set property accessible here
+        $configProperty->setValue($this->corePlugin, $testConfigValues);
 
-        $configProperty->setAccessible(true);
-        $configProperty->setValue($this->corePlugin, $this->testConfigValues);
-
+        //test the getConfigNode method with known configuration values (defined above)
         $this->assertEquals(
-            $this->testConfigValues['application']['test'],
+            $testConfigValues['application']['test'],
             $this->corePlugin->getConfigNode('application', 'test')
         );
     }
 }
+
+
+
