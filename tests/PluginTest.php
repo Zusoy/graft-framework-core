@@ -19,6 +19,19 @@ class PluginTest extends TestCase
      */
     private $corePlugin;
 
+    /**
+     * Configuration Values for Tests
+     *
+     * @var array
+     */
+    private $testConfigValues = [
+        "application" => [
+            "dev"       => true,
+            "test"      => "Hello World !",
+            "namespace" => "App"
+        ]
+    ];
+
 
     /**
      * PluginTest Constructor
@@ -81,5 +94,62 @@ class PluginTest extends TestCase
         $config = $this->corePlugin->getConfig();
 
         $this->assertTrue(\array_key_exists("fake", $config));
+    }
+
+
+    /**
+     * Test Get Plugin Configuration without Key
+     *
+     * @return void
+     */
+    public function testPluginGetConfigWithoutKey()
+    {
+        $reflection = new ReflectionClass($this->corePlugin);
+        $configProperty = $reflection->getProperty("config");
+
+        $configProperty->setAccessible(true);
+        $configProperty->setValue($this->corePlugin, $this->testConfigValues);
+
+        $this->assertEquals($this->testConfigValues, $this->corePlugin->getConfig());
+    }
+
+
+    /**
+     * Test Get Plugin Configuration with Key
+     *
+     * @return void
+     */
+    public function testPluginGetConfigWithKey()
+    {
+        $reflection = new ReflectionClass($this->corePlugin);
+        $configProperty = $reflection->getProperty("config");
+
+        $configProperty->setAccessible(true);
+        $configProperty->setValue($this->corePlugin, $this->testConfigValues);
+
+        $this->assertEquals(
+            $this->testConfigValues['application'], 
+            $this->corePlugin->getConfig('application')
+        );
+    }
+
+
+    /**
+     * Test Get Plugin Configuration Node
+     *
+     * @return void
+     */
+    public function testPluginGetConfigNode()
+    {
+        $reflection = new ReflectionClass($this->corePlugin);
+        $configProperty = $reflection->getProperty("config");
+
+        $configProperty->setAccessible(true);
+        $configProperty->setValue($this->corePlugin, $this->testConfigValues);
+
+        $this->assertEquals(
+            $this->testConfigValues['application']['test'],
+            $this->corePlugin->getConfigNode('application', 'test')
+        );
     }
 }

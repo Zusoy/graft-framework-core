@@ -1,7 +1,6 @@
 <?php
 require __DIR__ . "/../../../../../wordpress/wp-load.php";
 
-use \ReflectionClass;
 use PHPUnit\Framework\TestCase;
 use Graft\Test\Fake\Controller\HookController;
 use Doctrine\Common\Annotations\AnnotationReader;
