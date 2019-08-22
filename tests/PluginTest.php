@@ -7,11 +7,13 @@ use Graft\Framework\Plugin;
 
 /**
  * Test Plugin and Application Classes Behaviour
+ * 
+ * @category Test
  */
 class PluginTest extends TestCase
 {
     /**
-     * Core Plugin Class
+     * Core Plugin
      *
      * @var GraftCorePlugin
      */
@@ -45,12 +47,39 @@ class PluginTest extends TestCase
 
 
     /**
-     * Test Plugin Configuration
+     * Test Plugin Informations 
+     * Plugin's properties (name, description...) have to be the same as the plugin's file (comments)
+     *
+     * @return void
+     */
+    public function testPluginInformations()
+    {
+        $pluginFile = $this->corePlugin->getReflection()->getFileName();
+        $fileMetaDatas = \get_file_data(
+            $pluginFile, [
+                'getName'        => "Plugin Name",
+                'getDescription' => "Description",
+                'getAuthor'      => "Author",
+                'getVersion'     => "Version"
+            ]
+        );
+        
+        foreach ($fileMetaDatas as $getter => $value) 
+        {
+            $this->assertEquals($value, $this->corePlugin->{$getter}());
+        }
+    }
+
+
+    /**
+     * Test Custom Plugin Configuration
      *
      * @return void
      */
     public function testPluginConfiguration()
     {
-        
+        $config = $this->corePlugin->getConfig();
+
+        $this->assertTrue(\array_key_exists("fake", $config));
     }
 }
