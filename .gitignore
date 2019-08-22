@@ -1,4 +1,5 @@
 /vendor/
+/coverage/*
 /config/*
 /labo/*
 index.php
