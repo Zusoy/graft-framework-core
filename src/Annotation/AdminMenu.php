@@ -108,7 +108,7 @@ final class AdminMenu extends AbstractAnnotation
         );
 
         //add AdminMenu Component in Current Application Container
-        $this->container->addWordPressComponent($menuComponent);
+        $this->container->addUsedWordPressComponent($menuComponent);
     }
 
 
