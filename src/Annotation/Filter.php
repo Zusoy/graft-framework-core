@@ -84,7 +84,7 @@ final class Filter extends AbstractAnnotation
             ->setCallback([$this->instance, $this->method->getName()]);
         
         //add component to application container
-        $this->container->addWordPressComponent($filterComponent);
+        $this->container->addUsedWordPressComponent($filterComponent);
 
         //hook to WordPress Filter
         $filterComponent->hook();

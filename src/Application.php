@@ -431,7 +431,7 @@ abstract class Application
 
         //add parameters in container from config file
         $parameters = $this->getConfigNode('container', 'parameters');
-        $container->addParameters($parameters);
+        $container->addParametersFromArray($parameters);
 
         $this->container = $factory->build($container);
     }

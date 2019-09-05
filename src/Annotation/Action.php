@@ -84,7 +84,7 @@ final class Action extends AbstractAnnotation
             ->setCallback([$this->instance, $this->method->getName()]);
 
         //add component to application container
-        $this->container->addWordPressComponent($actionComponent);
+        $this->container->addUsedWordPressComponent($actionComponent);
 
         //hook to WordPress Action
         $actionComponent->hook();

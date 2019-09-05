@@ -20,7 +20,7 @@
         "symfony/yaml": "^4.2",
         "doctrine/annotations": "^1.6",
         "twig/twig": "^2.7",
-        "graft/wp-container": "^0.0.5",
+        "graft/wp-container": "^0.0.6",
         "twig/extensions": "^1.5",
         "gears/class-finder": "^1.0"
     }
